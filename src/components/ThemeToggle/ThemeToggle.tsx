@@ -25,9 +25,6 @@ const ThemeToggle = () => {
   const { theme, resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
-  // useEffect(() => {
-  //   setMounted(true);
-  // }, []);
   useEffect(() => {
     const id = requestAnimationFrame(() => setMounted(true));
     return () => cancelAnimationFrame(id);
@@ -59,8 +56,8 @@ const ThemeToggle = () => {
             title={isSystem ? `${labels[option]} (${resolvedTheme})` : labels[option]}
             className={clsx(
               'inline-flex h-8 w-8 items-center justify-center rounded-lg transition-colors cursor-pointer',
-              'focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-50',
-              'dark:focus-visible:ring-blue-400 dark:focus-visible:ring-offset-slate-950',
+              'focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-50',
+              'dark:focus-visible:ring-blue-500 dark:focus-visible:ring-offset-slate-950',
               isActive
                 ? 'bg-blue-600 text-white'
                 : 'text-slate-700 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800'

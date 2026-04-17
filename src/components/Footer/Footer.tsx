@@ -1,23 +1,23 @@
-import Link from 'next/link';
+import Container from '../Container/Container';
 
 const Footer = () => {
   return (
-    <footer className="p-5 bg-[#f0f0f0] text-center text-[14px] text-[#555] border-t border-[#ddd]">
-      <div className="">
-        <p>© {new Date().getFullYear()} NoteHub. All rights reserved.</p>
-        <div className="flex justify-center gap-5">
+    <footer className="border-t border-border py-4">
+      <Container>
+        <div className="space-y-2 text-center text-sm text-slate-600 dark:text-slate-300">
+          <p>© {new Date().getFullYear()} NoteHub. All rights reserved.</p>
           <p>Developer: Sergii Bartytskyi</p>
           <p>
-            Contact us:
-            <Link
+            Contact:{' '}
+            <a
               href="mailto:s.bartycjkyj@gmail.com"
-              className="text-[#226ec5] hover:underline font-semibold no-underline "
+              className="font-semibold text-blue-600 no-underline hover:underline dark:text-blue-400"
             >
               s.bartycjkyj@gmail.com
-            </Link>
+            </a>
           </p>
         </div>
-      </div>
+      </Container>
     </footer>
   );
 };

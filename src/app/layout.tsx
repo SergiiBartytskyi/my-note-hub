@@ -34,7 +34,7 @@ export default function RootLayout({
           <TanStackProvider>
             <Header />
 
-            <main>{children}</main>
+            <main className="flex-1">{children}</main>
 
             <Footer></Footer>
           </TanStackProvider>

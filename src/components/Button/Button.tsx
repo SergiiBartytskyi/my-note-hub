@@ -8,16 +8,16 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variantClasses: Record<ButtonVariant, string> = {
   primary:
-    'bg-blue-600 text-white hover:bg-blue-700 focus-visible:ring-blue-500 focus-visible:ring-offset-slate-50 dark:bg-blue-600 dark:hover:bg-blue-500 dark:focus-visible:ring-blue-600 dark:hover:focus-visible:ring-blue-500 dark:focus-visible:ring-offset-slate-950 active:bg-blue-700 dark:active:bg-blue-500',
+    'bg-blue-600 text-white hover:bg-blue-700 focus-visible:ring-blue-600 focus-visible:ring-offset-slate-50 dark:bg-blue-600 dark:hover:bg-blue-500 dark:focus-visible:ring-blue-500 dark:hover:focus-visible:ring-blue-500 dark:focus-visible:ring-offset-slate-950 active:bg-blue-700 dark:active:bg-blue-500',
 
   secondary:
-    'border border-slate-300 hover:border-slate-400 bg-white text-slate-800 hover:bg-slate-50 focus-visible:ring-blue-500 focus-visible:ring-offset-slate-50 dark:border-slate-700 dark:hover:border-slate-600 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 dark:focus-visible:ring-blue-600 dark:hover:focus-visible:ring-blue-500 dark:focus-visible:ring-offset-slate-950 active:bg-slate-50 dark:active:bg-slate-900',
+    'border border-slate-300 hover:border-slate-400 bg-white text-slate-800 hover:bg-slate-50 focus-visible:ring-blue-600 focus-visible:ring-offset-slate-50 dark:border-slate-700 dark:hover:border-slate-600 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 dark:focus-visible:ring-blue-500 dark:hover:focus-visible:ring-blue-500 dark:focus-visible:ring-offset-slate-950 active:bg-slate-50 dark:active:bg-slate-900',
 
   danger:
-    'bg-red-600 text-white hover:bg-red-700 focus-visible:ring-red-500 focus-visible:ring-offset-slate-50 dark:bg-red-600 dark:hover:bg-red-500 dark:focus-visible:ring-red-600 dark:hover:focus-visible:ring-red-500 dark:focus-visible:ring-offset-slate-950 active:bg-red-700 dark:active:bg-red-500',
+    'bg-red-600 text-white hover:bg-red-700 focus-visible:ring-red-600 focus-visible:ring-offset-slate-50 dark:bg-red-600 dark:hover:bg-red-500 dark:focus-visible:ring-red-500 dark:hover:focus-visible:ring-red-500 dark:focus-visible:ring-offset-slate-950 active:bg-red-700 dark:active:bg-red-500',
 
   ghost:
-    'bg-transparent text-slate-700 hover:bg-slate-100 focus-visible:ring-blue-500 focus-visible:ring-offset-slate-50 dark:text-slate-300 dark:hover:bg-slate-800 dark:focus-visible:ring-blue-600 dark:hover:focus-visible:ring-blue-500 dark:focus-visible:ring-offset-slate-950 active:bg-slate-100 dark:active:bg-slate-800',
+    'bg-transparent text-slate-700 hover:bg-slate-100 focus-visible:ring-blue-600 focus-visible:ring-offset-slate-50 dark:text-slate-300 dark:hover:bg-slate-800 dark:focus-visible:ring-blue-500 dark:hover:focus-visible:ring-blue-500 dark:focus-visible:ring-offset-slate-950 active:bg-slate-100 dark:active:bg-slate-800',
 };
 
 const Button = ({

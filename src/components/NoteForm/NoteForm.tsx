@@ -36,7 +36,6 @@ const NoteForm = ({ onSubmit, onCancel }: NoteFormProps) => {
     await onSubmit(values);
     actions.resetForm();
   };
-
   return (
     <Formik
       initialValues={initialValues}
@@ -72,7 +71,6 @@ const NoteForm = ({ onSubmit, onCancel }: NoteFormProps) => {
             />
             <ErrorMessage name="content" component="span" className="mt-1 text-xs text-red-500" />
           </div>
-
           <div className="flex flex-col text-base font-medium text-slate-700 dark:text-slate-300">
             <label htmlFor={`${fieldId}-tag`}>Tag</label>
             <Field

@@ -1,11 +1,28 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
-import { useParams } from 'next/navigation';
-import { fetchNoteById } from '@/lib/noteService';
+import { useState } from 'react';
+import Link from 'next/link';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useParams, useRouter } from 'next/navigation';
+import { ArrowLeft, Pencil, Trash2 } from 'lucide-react';
+import { fetchNoteById, deleteNote } from '@/lib/noteService';
+import Container from '@/components/Container/Container';
+import Button from '@/components/Button/Button';
+
+const formatDate = (value: string) =>
+  new Intl.DateTimeFormat('en-GB', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  }).format(new Date(value));
 
 const NoteDetailsClient = () => {
   const { id } = useParams<{ id: string }>();
+  const router = useRouter();
+  const queryClient = useQueryClient();
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const {
     data: note,
@@ -14,27 +31,118 @@ const NoteDetailsClient = () => {
   } = useQuery({
     queryKey: ['note', id],
     queryFn: () => fetchNoteById(id),
-    enabled: Boolean(id),
+    enabled: Boolean(id) && !isDeleting,
+    retry: false,
   });
 
-  if (isLoading) return <p>Loading, please wait...</p>;
-  if (error || !note) return <p>Something went wrong.</p>;
+  const deleteNoteMutation = useMutation({
+    mutationFn: deleteNote,
+  });
+
+  const handleDelete = async () => {
+    if (!id) return;
+
+    const confirmed = window.confirm('Are you sure you want to delete this note?');
+    if (!confirmed) return;
+
+    try {
+      setIsDeleting(true);
+      await deleteNoteMutation.mutateAsync(id);
+      queryClient.removeQueries({ queryKey: ['note', id] });
+      await queryClient.invalidateQueries({ queryKey: ['notes'] });
+      router.replace('/notes');
+    } catch (error) {
+      setIsDeleting(false);
+      console.error('Failed to delete note:', error);
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <Container>
+        <div className="py-8">
+          <p className="text-sm text-slate-500 dark:text-slate-400">Loading note...</p>
+        </div>
+      </Container>
+    );
+  }
+
+  if (isDeleting || deleteNoteMutation.isPending) {
+    return (
+      <Container>
+        <div className="py-8">
+          <p className="text-sm text-slate-500 dark:text-slate-400">Deleting note...</p>
+        </div>
+      </Container>
+    );
+  }
+
+  if (error || !note) {
+    return (
+      <Container>
+        <div className="py-8">
+          <div className="rounded-2xl border border-red-200 bg-red-50 p-4 shadow-sm dark:border-red-900 dark:bg-red-950/40">
+            <p className="text-sm text-red-600 dark:text-red-400">
+              Something went wrong while loading this note.
+            </p>
+          </div>
+        </div>
+      </Container>
+    );
+  }
 
   return (
-    <main className="flex-1">
-      <div className="max-w-200 mx-auto my-8 p-6 bg-white rounded-lg shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
-        <div className="flex flex-col gap-4">
-          <div className="flex justify-between items-center border-b border-[#ddd] pb-2">
-            <h2 className="m-0 text-[28px] text-[#333]">{note.title}</h2>
+    <Container>
+      <section className="mx-auto max-w-3xl py-6">
+        <Link
+          href="/notes"
+          className="mb-4 inline-flex items-center gap-2 rounded-lg text-sm font-medium text-slate-600 transition-colors hover:text-blue-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 dark:text-slate-300 dark:hover:text-blue-400"
+        >
+          <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+          Back to notes
+        </Link>
+
+        <article className="rounded-2xl border border-border bg-surface p-6 shadow-sm">
+          <header className="flex flex-col gap-3 border-b border-border pb-4 sm:flex-row sm:items-start sm:justify-between">
+            <div className="min-w-0">
+              <h1 className="text-2xl font-semibold text-foreground sm:text-3xl">{note.title}</h1>
+
+              <div className="mt-3 flex flex-wrap items-center gap-2 md:gap-4">
+                <span className="inline-flex max-w-full items-center rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+                  {note.tag}
+                </span>
+
+                <p className="text-sm text-slate-500 dark:text-slate-400">
+                  Created {formatDate(note.createdAt)}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <Button variant="secondary">
+                <Pencil className="h-4 w-4" aria-hidden="true" />
+                Edit
+              </Button>
+
+              <Button
+                variant="danger"
+                onClick={handleDelete}
+                disabled={isDeleting || deleteNoteMutation.isPending}
+              >
+                <Trash2 className="h-4 w-4" aria-hidden="true" />
+                {isDeleting || deleteNoteMutation.isPending ? 'Deleting...' : 'Delete'}
+              </Button>
+            </div>
+          </header>
+
+          <div className="pt-6">
+            <p className="whitespace-pre-wrap text-base leading-7 text-foreground">
+              {note.content}
+            </p>
           </div>
-          <p className="inline-block px-2 py-1 text-[12px] text-[#0d6efd] bg-[#e7f1ff] border border-[#b6d4fe] rounded-xl max-w-25 whitespace-nowrap overflow-hidden text-overflow-ellipsis">
-            {note.tag}
-          </p>
-          <p className="text-[18px] leading-6.5 color-[#444] whitespace-pre-wrap">{note.content}</p>
-          <p className="text-[14px] text-[#888] text-right">{note.createdAt}</p>
-        </div>
-      </div>
-    </main>
+        </article>
+      </section>
+    </Container>
   );
 };
 

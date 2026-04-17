@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
 import ThemeToggle from '@/components/ThemeToggle';
+import Container from '../Container/Container';
 
 const links = [
   { href: '/', label: 'Home' },
@@ -14,7 +15,7 @@ const links = [
 ];
 
 const navLinkClass =
-  'inline-flex items-center rounded-lg px-3 py-2 text-sm font-medium no-underline transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-blue-400 dark:focus-visible:ring-offset-slate-950';
+  'inline-flex items-center rounded-lg px-3 py-2 text-sm font-medium no-underline transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 dark:focus-visible:ring-blue-500';
 
 export default function Header() {
   const pathname = usePathname();
@@ -25,34 +26,60 @@ export default function Header() {
   };
 
   return (
-    <header className="px-4 py-4 sm:px-6 lg:px-8">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 rounded-2xl border border-border bg-surface px-4 py-4 shadow-sm backdrop-blur md:px-6">
-        <Link
-          href="/"
-          aria-label="Home"
-          className="flex items-center justify-center transition-transform active:scale-[0.98]"
-        >
-          <Image
-            src="/note-hub-logo.svg"
-            width={110}
-            height={40}
-            alt="NoteHub logo"
-            priority
-            className="h-auto w-27.5"
-          />
-        </Link>
+    <header className="py-4">
+      <Container>
+        <div className="flex items-center justify-between gap-4 rounded-2xl border border-border bg-surface px-4 py-4 shadow-sm backdrop-blur md:px-6 md:py-6">
+          <Link
+            href="/"
+            aria-label="Home"
+            className="flex items-center justify-center transition-transform active:scale-[0.98]"
+          >
+            <Image
+              src="/note-hub-logo.svg"
+              width={110}
+              height={40}
+              alt="NoteHub logo"
+              priority
+              className="h-auto w-27.5"
+            />
+          </Link>
 
-        <nav aria-label="Main navigation" className="hidden md:block">
-          <ul className="m-0 flex list-none items-center gap-2 p-0">
+          <nav aria-label="Main navigation" className="hidden md:block">
+            <ul className="m-0 flex list-none items-center gap-2 p-0">
+              {links.map(link => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className={clsx(
+                      navLinkClass,
+                      isActive(link.href)
+                        ? 'bg-slate-100 text-blue-600 dark:bg-slate-800 dark:text-blue-400'
+                        : 'text-foreground hover:bg-slate-100 hover:text-blue-600 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-blue-400'
+                    )}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <div className="shrink-0">
+            <ThemeToggle />
+          </div>
+        </div>
+
+        <nav aria-label="Mobile navigation" className="mt-3 md:hidden">
+          <ul className="grid grid-cols-2 gap-2">
             {links.map(link => (
               <li key={link.href}>
                 <Link
                   href={link.href}
                   className={clsx(
-                    navLinkClass,
+                    'flex items-center justify-center rounded-xl border px-3 py-2 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 dark:focus-visible:ring-blue-500',
                     isActive(link.href)
-                      ? 'bg-slate-100 text-blue-600 dark:bg-slate-800 dark:text-blue-400'
-                      : 'text-foreground hover:bg-slate-100 hover:text-blue-600 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-blue-400'
+                      ? 'border-border bg-slate-100 text-blue-600 dark:bg-slate-800 dark:text-blue-400'
+                      : 'border-border bg-surface-solid text-foreground hover:bg-slate-100 hover:text-blue-600 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-blue-400'
                   )}
                 >
                   {link.label}
@@ -61,31 +88,7 @@ export default function Header() {
             ))}
           </ul>
         </nav>
-
-        <div className="shrink-0">
-          <ThemeToggle />
-        </div>
-      </div>
-
-      <nav aria-label="Mobile navigation" className="mt-3 md:hidden">
-        <ul className="grid grid-cols-2 gap-2">
-          {links.map(link => (
-            <li key={link.href}>
-              <Link
-                href={link.href}
-                className={clsx(
-                  'flex items-center justify-center rounded-xl border px-3 py-2 text-sm font-medium transition-colors',
-                  isActive(link.href)
-                    ? 'border-border bg-slate-100 text-blue-600 dark:bg-slate-800 dark:text-blue-400'
-                    : 'border-border bg-surface-solid text-foreground hover:bg-slate-100 hover:text-blue-600 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-blue-400'
-                )}
-              >
-                {link.label}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </nav>
+      </Container>
     </header>
   );
 }
