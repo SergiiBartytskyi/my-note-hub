@@ -3,6 +3,7 @@ import { Formik, Form, Field, ErrorMessage, type FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 import Button from '../Button/Button';
 import type { NoteTag } from '../../types/note';
+import { Toaster } from 'react-hot-toast';
 
 interface NoteFormProps {
   onSubmit: (values: NoteFormValues) => Promise<void>;

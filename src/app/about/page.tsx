@@ -1,3 +1,4 @@
+import Container from '@/components/Container/Container';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -5,7 +6,13 @@ export const metadata: Metadata = {
 };
 
 const About = () => {
-  return <div>About</div>;
+  return (
+    <>
+      <Container>
+        <section>About</section>
+      </Container>
+    </>
+  );
 };
 
 export default About;

@@ -8,6 +8,7 @@ import Container from '@/components/Container/Container';
 import Button from '@/components/Button/Button';
 import { useNote } from '@/hooks/useNote';
 import { useDeleteNote } from '@/hooks/useDeleteNote';
+import toast from 'react-hot-toast';
 
 const formatDate = (value: string) =>
   new Intl.DateTimeFormat('en-GB', {
@@ -24,7 +25,6 @@ const NoteDetailsClient = () => {
   const [isDeleting, setIsDeleting] = useState(false);
 
   const { data: note, isLoading, error } = useNote(id, !isDeleting);
-
   const deleteNoteMutation = useDeleteNote();
 
   const handleDelete = async () => {
@@ -37,11 +37,8 @@ const NoteDetailsClient = () => {
       setIsDeleting(true);
       await deleteNoteMutation.mutateAsync(id);
       router.replace('/notes');
-    } catch (error) {
+    } catch {
       setIsDeleting(false);
-      console.error('Failed to delete note:', error);
-
-      // ToDo: Show error toast to user
     }
   };
 
@@ -65,7 +62,7 @@ const NoteDetailsClient = () => {
     );
   }
 
-  if (error || !note) {
+  if (error) {
     return (
       <Container>
         <div className="py-8">
@@ -74,6 +71,16 @@ const NoteDetailsClient = () => {
               Something went wrong while loading this note.
             </p>
           </div>
+        </div>
+      </Container>
+    );
+  }
+
+  if (!note) {
+    return (
+      <Container>
+        <div className="py-8">
+          <p className="text-sm text-slate-500 dark:text-slate-400">Note not found.</p>
         </div>
       </Container>
     );

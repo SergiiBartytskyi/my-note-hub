@@ -2,8 +2,6 @@
 
 import { useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
-import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-
 import Button from '@/components/Button/Button';
 import Container from '@/components/Container/Container';
 import Modal from '@/components/Modal/Modal';
@@ -11,9 +9,9 @@ import NoteForm, { type NoteFormValues } from '@/components/NoteForm/NoteForm';
 import NoteList from '@/components/NoteList/NoteList';
 import Pagination from '@/components/Pagination/Pagination';
 import SearchBox from '@/components/SearchBox/SearchBox';
-import { createNote, deleteNote, fetchNotes } from '@/lib/noteService';
 import { useNotes } from '@/hooks/useNotes';
 import { useCreateNote } from '@/hooks/useCreateNote';
+import { useDeleteNote } from '@/hooks/useDeleteNote';
 
 interface NotesClientProps {
   initialSearch: string;
@@ -25,21 +23,13 @@ const NotesClient = ({ initialSearch, initialPage }: NotesClientProps) => {
   const [currentPage, setCurrentPage] = useState<number>(initialPage);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  const queryClient = useQueryClient();
-
   const { data, isError, isFetching } = useNotes({ search: query, page: currentPage });
 
   const totalPages = data?.totalPages ?? 1;
   const notes = data?.notes ?? [];
 
   const createNoteMutation = useCreateNote();
-
-  const deleteNoteMutation = useMutation({
-    mutationFn: deleteNote,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ['notes'] });
-    },
-  });
+  const deleteNoteMutation = useDeleteNote();
 
   const handleChanged = useDebouncedCallback((value: string) => {
     setQuery(value);
@@ -58,18 +48,14 @@ const NotesClient = ({ initialSearch, initialPage }: NotesClientProps) => {
     try {
       await createNoteMutation.mutateAsync(values);
       handleClose();
-    } catch (error) {
-      console.error('Create note failed in component:', error);
-
-      //TODO: Show error toast to user
+    } catch {
+      // handled in mutation onError
     }
   };
 
   const handleDeleteClick = (id: string) => {
     const confirmed = window.confirm('Are you sure you want to delete this note?');
     if (!confirmed) return;
-
-    //ToDo: Show loading state for the specific note being deleted
 
     deleteNoteMutation.mutate(id);
   };
