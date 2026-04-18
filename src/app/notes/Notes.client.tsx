@@ -12,6 +12,8 @@ import NoteList from '@/components/NoteList/NoteList';
 import Pagination from '@/components/Pagination/Pagination';
 import SearchBox from '@/components/SearchBox/SearchBox';
 import { createNote, deleteNote, fetchNotes } from '@/lib/noteService';
+import { useNotes } from '@/hooks/useNotes';
+import { useCreateNote } from '@/hooks/useCreateNote';
 
 interface NotesClientProps {
   initialSearch: string;
@@ -25,22 +27,12 @@ const NotesClient = ({ initialSearch, initialPage }: NotesClientProps) => {
 
   const queryClient = useQueryClient();
 
-  const { data, isError, isFetching } = useQuery({
-    queryKey: ['notes', query, currentPage],
-    queryFn: () => fetchNotes({ search: query, page: currentPage }),
-    placeholderData: keepPreviousData,
-  });
+  const { data, isError, isFetching } = useNotes({ search: query, page: currentPage });
 
   const totalPages = data?.totalPages ?? 1;
   const notes = data?.notes ?? [];
 
-  const createNoteMutation = useMutation({
-    mutationFn: createNote,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ['notes'] });
-      handleClose();
-    },
-  });
+  const createNoteMutation = useCreateNote();
 
   const deleteNoteMutation = useMutation({
     mutationFn: deleteNote,
@@ -63,12 +55,21 @@ const NotesClient = ({ initialSearch, initialPage }: NotesClientProps) => {
   };
 
   const handleSubmit = async (values: NoteFormValues) => {
-    await createNoteMutation.mutateAsync(values);
+    try {
+      await createNoteMutation.mutateAsync(values);
+      handleClose();
+    } catch (error) {
+      console.error('Create note failed in component:', error);
+
+      //TODO: Show error toast to user
+    }
   };
 
   const handleDeleteClick = (id: string) => {
     const confirmed = window.confirm('Are you sure you want to delete this note?');
     if (!confirmed) return;
+
+    //ToDo: Show loading state for the specific note being deleted
 
     deleteNoteMutation.mutate(id);
   };

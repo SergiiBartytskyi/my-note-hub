@@ -2,12 +2,12 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useParams, useRouter } from 'next/navigation';
 import { ArrowLeft, Pencil, Trash2 } from 'lucide-react';
-import { fetchNoteById, deleteNote } from '@/lib/noteService';
 import Container from '@/components/Container/Container';
 import Button from '@/components/Button/Button';
+import { useNote } from '@/hooks/useNote';
+import { useDeleteNote } from '@/hooks/useDeleteNote';
 
 const formatDate = (value: string) =>
   new Intl.DateTimeFormat('en-GB', {
@@ -21,23 +21,11 @@ const formatDate = (value: string) =>
 const NoteDetailsClient = () => {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
-  const queryClient = useQueryClient();
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const {
-    data: note,
-    isLoading,
-    error,
-  } = useQuery({
-    queryKey: ['note', id],
-    queryFn: () => fetchNoteById(id),
-    enabled: Boolean(id) && !isDeleting,
-    retry: false,
-  });
+  const { data: note, isLoading, error } = useNote(id, !isDeleting);
 
-  const deleteNoteMutation = useMutation({
-    mutationFn: deleteNote,
-  });
+  const deleteNoteMutation = useDeleteNote();
 
   const handleDelete = async () => {
     if (!id) return;
@@ -48,12 +36,12 @@ const NoteDetailsClient = () => {
     try {
       setIsDeleting(true);
       await deleteNoteMutation.mutateAsync(id);
-      queryClient.removeQueries({ queryKey: ['note', id] });
-      await queryClient.invalidateQueries({ queryKey: ['notes'] });
       router.replace('/notes');
     } catch (error) {
       setIsDeleting(false);
       console.error('Failed to delete note:', error);
+
+      // ToDo: Show error toast to user
     }
   };
 
