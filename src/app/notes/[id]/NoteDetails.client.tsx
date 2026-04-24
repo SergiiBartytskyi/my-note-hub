@@ -8,7 +8,6 @@ import Container from '@/components/Container/Container';
 import Button from '@/components/Button/Button';
 import { useNote } from '@/hooks/useNote';
 import { useDeleteNote } from '@/hooks/useDeleteNote';
-import toast from 'react-hot-toast';
 
 const formatDate = (value: string) =>
   new Intl.DateTimeFormat('en-GB', {
@@ -36,10 +35,19 @@ const NoteDetailsClient = () => {
     try {
       setIsDeleting(true);
       await deleteNoteMutation.mutateAsync(id);
-      router.replace('/notes');
+      router.replace('/notes/filter/all');
     } catch {
       setIsDeleting(false);
     }
+  };
+
+  const handleBack = () => {
+    if (window.history.length > 1) {
+      router.back();
+      return;
+    }
+
+    router.push('/notes/filter/all');
   };
 
   if (isLoading) {
@@ -89,13 +97,10 @@ const NoteDetailsClient = () => {
   return (
     <Container>
       <section className="mx-auto max-w-3xl py-6">
-        <Link
-          href="/notes"
-          className="mb-4 inline-flex items-center gap-2 rounded-lg text-sm font-medium text-slate-600 transition-colors hover:text-blue-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 dark:text-slate-300 dark:hover:text-blue-400"
-        >
+        <Button variant="ghost" type="button" onClick={handleBack} className="mb-4 gap-2">
           <ArrowLeft className="h-4 w-4" aria-hidden="true" />
           Back to notes
-        </Link>
+        </Button>
 
         <article className="rounded-2xl border border-border bg-surface p-6 shadow-sm">
           <header className="flex flex-col gap-3 border-b border-border pb-4 sm:flex-row sm:items-start sm:justify-between">

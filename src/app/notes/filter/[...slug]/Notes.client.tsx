@@ -15,15 +15,20 @@ import { useDeleteNote } from '@/hooks/useDeleteNote';
 
 interface NotesClientProps {
   initialSearch: string;
+  initialCategoryId?: string;
   initialPage: number;
 }
 
-const NotesClient = ({ initialSearch, initialPage }: NotesClientProps) => {
+const NotesClient = ({ initialSearch, initialCategoryId, initialPage }: NotesClientProps) => {
   const [query, setQuery] = useState<string>(initialSearch);
   const [currentPage, setCurrentPage] = useState<number>(initialPage);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  const { data, isError, isFetching } = useNotes({ search: query, page: currentPage });
+  const { data, isError, isFetching } = useNotes({
+    search: query,
+    categoryId: initialCategoryId,
+    page: currentPage,
+  });
 
   const totalPages = data?.totalPages ?? 1;
   const notes = data?.notes ?? [];
@@ -60,6 +65,7 @@ const NotesClient = ({ initialSearch, initialPage }: NotesClientProps) => {
     deleteNoteMutation.mutate(id);
   };
 
+  
   return (
     <>
       <Container className="flex flex-col gap-4">

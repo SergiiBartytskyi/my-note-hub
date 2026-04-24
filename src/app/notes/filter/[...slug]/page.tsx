@@ -9,24 +9,28 @@ export const metadata: Metadata = {
 };
 
 interface NotesPageProps {
+  params: Promise<{ slug: string[] }>;
   searchParams: Promise<{ search?: string; page?: string }>;
 }
 
-const NotesPage = async ({ searchParams }: NotesPageProps) => {
-  const params = await searchParams;
-  const search = params.search ?? '';
-  const page = Number(params.page ?? '1');
+const NotesPage = async ({ params, searchParams }: NotesPageProps) => {
+  const { slug } = await params;
+  const resolvedSearchParams = await searchParams;
+
+  const search = resolvedSearchParams.search ?? '';
+  const page = Number(resolvedSearchParams.page ?? '1');
+  const categoryId = slug[0] === 'all' ? undefined : slug[0];
 
   const queryClient = getQueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: ['notes', search, page],
-    queryFn: () => fetchNotes({ search, page }),
+    queryKey: ['notes', search, categoryId, page],
+    queryFn: () => fetchNotes({ search, categoryId, page }),
   });
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <NotesClient initialSearch={search} initialPage={page} />
+      <NotesClient initialSearch={search} initialCategoryId={categoryId} initialPage={page} />
     </HydrationBoundary>
   );
 };

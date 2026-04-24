@@ -3,6 +3,7 @@ import type { NoteDto } from '../types/note';
 
 interface FetchNotesParams {
   search: string;
+  categoryId?: string;
   page: number;
 }
 
@@ -13,11 +14,13 @@ export interface FetchNotesResponse {
 
 export const fetchNotes = async ({
   search,
+  categoryId,
   page = 1,
 }: FetchNotesParams): Promise<FetchNotesResponse> => {
   const response = await axiosAPI.get<FetchNotesResponse>('/notes', {
     params: {
       search,
+      categoryId,
       page,
       perPage: 12,
     },
