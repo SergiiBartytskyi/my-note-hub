@@ -9,7 +9,9 @@ const About = () => {
   return (
     <>
       <Container>
-        <section>About</section>
+        <section className="rounded-2xl border border-border bg-surface p-4 shadow-sm flex flex-col items-start justify-between gap-3">
+          About
+        </section>
       </Container>
     </>
   );
