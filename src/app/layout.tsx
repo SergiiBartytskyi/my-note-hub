@@ -24,8 +24,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  modal,
 }: Readonly<{
   children: React.ReactNode;
+  modal: React.ReactNode;
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
@@ -34,9 +36,12 @@ export default function RootLayout({
           <TanStackProvider>
             <Header />
 
-            <main className="flex-1">{children}</main>
+            <main className="flex-1 pb-4 sm:pb-6 lg:pb-8">
+              {children}
+              {modal}
+            </main>
 
-            <Footer></Footer>
+            <Footer />
           </TanStackProvider>
         </Providers>
       </body>

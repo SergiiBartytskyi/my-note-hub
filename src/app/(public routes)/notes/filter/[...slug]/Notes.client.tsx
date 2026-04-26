@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import Button from '@/components/Button/Button';
-import Container from '@/components/Container/Container';
+// import Container from '@/components/Container/Container';
 import Modal from '@/components/Modal/Modal';
 import NoteForm, { type NoteFormValues } from '@/components/NoteForm/NoteForm';
 import NoteList from '@/components/NoteList/NoteList';
@@ -66,7 +66,8 @@ const NotesClient = ({ initialSearch, initialCategoryId, initialPage }: NotesCli
   };
 
   return (
-    <Container className="flex flex-col gap-4">
+    // <Container className="flex flex-col gap-4">
+    <>
       <section className="rounded-2xl border border-border bg-surface p-4 shadow-sm flex flex-col items-start justify-between gap-3 md:flex-row md:items-center">
         <div className="w-full max-w-md">
           <SearchBox onSubmit={handleChanged} defaultValue={query} isLoading={isFetching} />
@@ -112,7 +113,8 @@ const NotesClient = ({ initialSearch, initialCategoryId, initialPage }: NotesCli
           <NoteForm onSubmit={handleSubmit} onCancel={handleClose} />
         </Modal>
       )}
-    </Container>
+    </>
+    // </Container>
   );
 };
 

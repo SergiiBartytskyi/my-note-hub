@@ -1,22 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { ArrowLeft, Pencil, Trash2 } from 'lucide-react';
 import Container from '@/components/Container/Container';
 import Button from '@/components/Button/Button';
 import { useNote } from '@/hooks/useNote';
 import { useDeleteNote } from '@/hooks/useDeleteNote';
-
-const formatDate = (value: string) =>
-  new Intl.DateTimeFormat('en-GB', {
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  }).format(new Date(value));
+import { formatDate } from '@/utils/formatDate';
 
 const NoteDetailsClient = () => {
   const { id } = useParams<{ id: string }>();
@@ -96,7 +87,7 @@ const NoteDetailsClient = () => {
 
   return (
     <Container>
-      <section className="mx-auto max-w-3xl py-6">
+      <section className="mx-auto max-w-3xl">
         <Button variant="ghost" type="button" onClick={handleBack} className="mb-4 gap-2">
           <ArrowLeft className="h-4 w-4" aria-hidden="true" />
           Back to notes

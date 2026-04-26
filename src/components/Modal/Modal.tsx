@@ -1,18 +1,33 @@
+'use client';
+
 import { createPortal } from 'react-dom';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Button from '../Button/Button';
 
 interface ModalProps {
-  onClose: () => void;
+  onClose?: () => void;
   children?: React.ReactNode;
 }
-const MovieModal = ({ onClose, children }: ModalProps) => {
+
+const Modal = ({ onClose, children }: ModalProps) => {
+  const router = useRouter();
+
+  const handleClose = useCallback(() => {
+    if (onClose) {
+      onClose();
+      return;
+    }
+
+    router.back();
+  }, [onClose, router]);
+
   useEffect(() => {
     const scrollY = window.scrollY;
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        onClose();
+        handleClose();
       }
     };
 
@@ -35,13 +50,14 @@ const MovieModal = ({ onClose, children }: ModalProps) => {
 
       window.scrollTo(0, scrollY);
     };
-  }, [onClose]);
+  }, [handleClose]);
 
   const handleBackdropClick = (event: React.MouseEvent<HTMLDivElement>) => {
     if (event.target === event.currentTarget) {
-      onClose();
+      handleClose();
     }
   };
+
   return createPortal(
     <div
       className="fixed inset-0 z-9999 flex min-h-dvh items-center justify-center bg-black/60"
@@ -55,7 +71,7 @@ const MovieModal = ({ onClose, children }: ModalProps) => {
       >
         <Button
           variant="ghost"
-          onClick={onClose}
+          onClick={handleClose}
           aria-label="Close modal"
           className="absolute top-2 right-2 h-8 w-8 rounded-md p-0 text-xl leading-none"
         >
@@ -68,4 +84,4 @@ const MovieModal = ({ onClose, children }: ModalProps) => {
   );
 };
 
-export default MovieModal;
+export default Modal;
