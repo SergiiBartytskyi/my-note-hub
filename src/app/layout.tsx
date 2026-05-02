@@ -27,16 +27,16 @@ export default function RootLayout({
   modal,
 }: Readonly<{
   children: React.ReactNode;
-  modal: React.ReactNode;
+  modal?: React.ReactNode;
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} flex flex-col`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} min-h-dvh flex flex-col`}>
         <Providers>
           <TanStackProvider>
             <Header />
 
-            <main className="flex flex-1 flex-col pb-4 items-center gap-4">
+            <main className="flex flex-1 flex-col pb-4 items-stretch gap-4">
               {children}
               {modal}
             </main>

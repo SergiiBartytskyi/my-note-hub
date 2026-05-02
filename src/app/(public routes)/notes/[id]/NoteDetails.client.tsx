@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { ArrowLeft, Pencil, Trash2 } from 'lucide-react';
 import Container from '@/components/Container/Container';
 import Button from '@/components/Button/Button';
@@ -9,12 +9,15 @@ import { useNote } from '@/hooks/useNote';
 import { useDeleteNote } from '@/hooks/useDeleteNote';
 import { formatDate } from '@/utils/formatDate';
 
-const NoteDetailsClient = () => {
-  const { id } = useParams<{ id: string }>();
+interface NoteDetailsClientProps {
+  id: string;
+}
+
+const NoteDetailsClient = ({ id }: NoteDetailsClientProps) => {
   const router = useRouter();
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const { data: note, isLoading, error } = useNote(id, !isDeleting);
+  const { data: note, isLoading } = useNote(id, !isDeleting);
   const deleteNoteMutation = useDeleteNote();
 
   const handleDelete = async () => {
@@ -38,7 +41,7 @@ const NoteDetailsClient = () => {
       return;
     }
 
-    router.push('/notes/filter/all');
+    router.replace('/notes/filter/all');
   };
 
   if (isLoading) {
@@ -61,28 +64,8 @@ const NoteDetailsClient = () => {
     );
   }
 
-  if (error) {
-    return (
-      <Container>
-        <div className="py-8">
-          <div className="rounded-2xl border border-red-200 bg-red-50 p-4 shadow-sm dark:border-red-900 dark:bg-red-950/40">
-            <p className="text-sm text-red-600 dark:text-red-400">
-              Something went wrong while loading this note.
-            </p>
-          </div>
-        </div>
-      </Container>
-    );
-  }
-
   if (!note) {
-    return (
-      <Container>
-        <div className="py-8">
-          <p className="text-sm text-slate-500 dark:text-slate-400">Note not found.</p>
-        </div>
-      </Container>
-    );
+    return null;
   }
 
   return (

@@ -12,6 +12,7 @@ import { useNotes } from '@/hooks/useNotes';
 import { useCreateNote } from '@/hooks/useCreateNote';
 import { useDeleteNote } from '@/hooks/useDeleteNote';
 import CategorySelect from '@/components/CategorySelect/CategorySelect';
+import Container from '@/components/Container/Container';
 
 type RouteTag = 'all' | 'Todo' | 'Work' | 'Personal' | 'Meeting' | 'Shopping';
 
@@ -71,8 +72,8 @@ const NotesClient = ({ initialSearch, initialTag, initialPage }: NotesClientProp
   const showList = notes.length > 0;
 
   return (
-    <>
-      <section className="rounded-2xl border border-border bg-surface p-4 shadow-sm flex flex-col items-start justify-between gap-3 md:flex-row md:items-center">
+    <div className="flex flex-1 w-full flex-col gap-4">
+      <section className="flex flex-col items-start justify-between gap-3 md:flex-row md:items-center rounded-2xl border border-border bg-surface p-4 shadow-sm ">
         <div className="w-full max-w-md">
           <SearchBox onSubmit={handleChanged} defaultValue={query} isLoading={isFetching} />
         </div>
@@ -88,50 +89,25 @@ const NotesClient = ({ initialSearch, initialTag, initialPage }: NotesClientProp
         </div>
       </section>
 
-      <section className="space-y-6">
-        {/* {isError ? (
-          <div className="rounded-2xl border border-red-200 bg-red-50 p-4 shadow-sm dark:border-red-900 dark:bg-red-950/40">
-            <p className="text-sm text-red-600 dark:text-red-400">
-              Something went wrong while loading notes.
-            </p>
-          </div>
-        ) : notes.length > 0 ? (
-          <>
-            <NoteList notes={notes} onDelete={handleDeleteClick} />
-
-            {totalPages > 1 && (
-              <Pagination
-                totalPages={totalPages}
-                currentPage={currentPage}
-                setPage={setCurrentPage}
-              />
-            )}
-          </>
-        ) : (
-          <div className="rounded-2xl border border-border bg-surface p-6 shadow-sm">
-            <p className="text-sm text-slate-600 dark:text-slate-300">
-              No notes found. Try another search or create your first note.
-            </p>
-          </div>
-        )} */}
+      <section className="flex min-h-[calc(100dvh-320px)]">
         {showInitialLoader ? (
-          <div className="rounded-2xl border border-border bg-surface p-6 shadow-sm">
+          <Container className="flex flex-col items-center justify-center gap-3 w-full rounded-2xl border border-border bg-surface p-4 shadow-sm">
             <p className="text-sm text-slate-600 dark:text-slate-300">Loading notes...</p>
-          </div>
+          </Container>
         ) : showError ? (
-          <div className="rounded-2xl border border-red-200 bg-red-50 p-4 shadow-sm dark:border-red-900 dark:bg-red-950/40">
+          <Container className="flex flex-col items-center justify-center gap-3 w-full rounded-2xl border border-border bg-surface p-4 shadow-sm">
             <p className="text-sm text-red-600 dark:text-red-400">
               Something went wrong while loading notes.
             </p>
-          </div>
+          </Container>
         ) : showEmpty ? (
-          <div className="rounded-2xl border border-border bg-surface p-6 shadow-sm">
+          <Container className="flex flex-col items-center justify-center gap-3 w-full rounded-2xl border border-border bg-surface p-4 shadow-sm">
             <p className="text-sm text-slate-600 dark:text-slate-300">
               No notes found. Try another search or create your first note.
             </p>
-          </div>
+          </Container>
         ) : showList ? (
-          <>
+          <div className="w-full space-y-6">
             <NoteList notes={notes} onDelete={handleDeleteClick} />
 
             {totalPages > 1 && (
@@ -141,7 +117,7 @@ const NotesClient = ({ initialSearch, initialTag, initialPage }: NotesClientProp
                 setPage={setCurrentPage}
               />
             )}
-          </>
+          </div>
         ) : null}
       </section>
 
@@ -150,7 +126,7 @@ const NotesClient = ({ initialSearch, initialTag, initialPage }: NotesClientProp
           <NoteForm onSubmit={handleSubmit} onCancel={handleClose} />
         </Modal>
       )}
-    </>
+    </div>
   );
 };
 

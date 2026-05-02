@@ -38,8 +38,6 @@ const NotesPage = async ({ params, searchParams }: NotesPageProps) => {
 
   const tag: NoteTag | undefined = routeTag === 'all' ? undefined : (routeTag as NoteTag);
 
-  // const tag = slug[0] === 'all' ? undefined : (slug[0] as NoteTag);
-
   const queryClient = getQueryClient();
 
   await queryClient.prefetchQuery({
@@ -49,7 +47,9 @@ const NotesPage = async ({ params, searchParams }: NotesPageProps) => {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <NotesClient initialSearch={search} initialTag={routeTag as RouteTag} initialPage={page} />
+      <div className="flex flex-1 w-full">
+        <NotesClient initialSearch={search} initialTag={routeTag as RouteTag} initialPage={page} />
+      </div>
     </HydrationBoundary>
   );
 };
