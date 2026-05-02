@@ -2,7 +2,7 @@ import Container from '../Container/Container';
 
 const Footer = () => {
   return (
-    <footer className="border-t border-border py-4 sm:py-6 lg:py-8">
+    <footer className="border-t border-border py-4">
       <Container>
         <div className="space-y-2 text-center text-sm text-slate-600 dark:text-slate-300">
           <p>© {new Date().getFullYear()} NoteHub. All rights reserved.</p>

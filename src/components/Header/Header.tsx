@@ -26,7 +26,7 @@ export default function Header() {
   };
 
   return (
-    <header className="py-4 sm:py-6 lg:py-8">
+    <header className="pt-1 pb-4">
       <Container>
         <div className="flex items-center justify-between gap-4 rounded-2xl border border-border bg-surface p-4 shadow-sm backdrop-blur md:p-6">
           <Link

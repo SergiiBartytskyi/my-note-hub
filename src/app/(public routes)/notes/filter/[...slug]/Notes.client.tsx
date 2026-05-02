@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import Button from '@/components/Button/Button';
-// import Container from '@/components/Container/Container';
 import Modal from '@/components/Modal/Modal';
 import NoteForm, { type NoteFormValues } from '@/components/NoteForm/NoteForm';
 import NoteList from '@/components/NoteList/NoteList';
@@ -12,42 +11,43 @@ import SearchBox from '@/components/SearchBox/SearchBox';
 import { useNotes } from '@/hooks/useNotes';
 import { useCreateNote } from '@/hooks/useCreateNote';
 import { useDeleteNote } from '@/hooks/useDeleteNote';
+import CategorySelect from '@/components/CategorySelect/CategorySelect';
+
+type RouteTag = 'all' | 'Todo' | 'Work' | 'Personal' | 'Meeting' | 'Shopping';
 
 interface NotesClientProps {
   initialSearch: string;
-  initialCategoryId?: string;
+  initialTag: RouteTag;
   initialPage: number;
 }
 
-const NotesClient = ({ initialSearch, initialCategoryId, initialPage }: NotesClientProps) => {
+const NotesClient = ({ initialSearch, initialTag, initialPage }: NotesClientProps) => {
   const [query, setQuery] = useState<string>(initialSearch);
   const [currentPage, setCurrentPage] = useState<number>(initialPage);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  const { data, isError, isFetching } = useNotes({
+  const backendTag = initialTag === 'all' ? undefined : initialTag;
+
+  const { data, isPending, isFetching, isError, isSuccess } = useNotes({
     search: query,
-    categoryId: initialCategoryId,
+    tag: backendTag,
     page: currentPage,
   });
 
-  const totalPages = data?.totalPages ?? 1;
-  const notes = data?.notes ?? [];
-
   const createNoteMutation = useCreateNote();
   const deleteNoteMutation = useDeleteNote();
+
+  const totalPages = data?.totalPages ?? 1;
+  const notes = data?.notes ?? [];
 
   const handleChanged = useDebouncedCallback((value: string) => {
     setQuery(value);
     setCurrentPage(1);
   }, 1000);
 
-  const handleClick = () => {
-    setIsModalOpen(true);
-  };
+  const handleClick = () => setIsModalOpen(true);
 
-  const handleClose = () => {
-    setIsModalOpen(false);
-  };
+  const handleClose = () => setIsModalOpen(false);
 
   const handleSubmit = async (values: NoteFormValues) => {
     try {
@@ -65,12 +65,20 @@ const NotesClient = ({ initialSearch, initialCategoryId, initialPage }: NotesCli
     deleteNoteMutation.mutate(id);
   };
 
+  const showInitialLoader = isPending && !data;
+  const showError = isError && !data;
+  const showEmpty = isSuccess && notes.length === 0;
+  const showList = notes.length > 0;
+
   return (
-    // <Container className="flex flex-col gap-4">
     <>
       <section className="rounded-2xl border border-border bg-surface p-4 shadow-sm flex flex-col items-start justify-between gap-3 md:flex-row md:items-center">
         <div className="w-full max-w-md">
           <SearchBox onSubmit={handleChanged} defaultValue={query} isLoading={isFetching} />
+        </div>
+
+        <div>
+          <CategorySelect value={initialTag} />
         </div>
 
         <div className="flex items-center justify-start gap-3 md:justify-end">
@@ -81,7 +89,7 @@ const NotesClient = ({ initialSearch, initialCategoryId, initialPage }: NotesCli
       </section>
 
       <section className="space-y-6">
-        {isError ? (
+        {/* {isError ? (
           <div className="rounded-2xl border border-red-200 bg-red-50 p-4 shadow-sm dark:border-red-900 dark:bg-red-950/40">
             <p className="text-sm text-red-600 dark:text-red-400">
               Something went wrong while loading notes.
@@ -105,7 +113,36 @@ const NotesClient = ({ initialSearch, initialCategoryId, initialPage }: NotesCli
               No notes found. Try another search or create your first note.
             </p>
           </div>
-        )}
+        )} */}
+        {showInitialLoader ? (
+          <div className="rounded-2xl border border-border bg-surface p-6 shadow-sm">
+            <p className="text-sm text-slate-600 dark:text-slate-300">Loading notes...</p>
+          </div>
+        ) : showError ? (
+          <div className="rounded-2xl border border-red-200 bg-red-50 p-4 shadow-sm dark:border-red-900 dark:bg-red-950/40">
+            <p className="text-sm text-red-600 dark:text-red-400">
+              Something went wrong while loading notes.
+            </p>
+          </div>
+        ) : showEmpty ? (
+          <div className="rounded-2xl border border-border bg-surface p-6 shadow-sm">
+            <p className="text-sm text-slate-600 dark:text-slate-300">
+              No notes found. Try another search or create your first note.
+            </p>
+          </div>
+        ) : showList ? (
+          <>
+            <NoteList notes={notes} onDelete={handleDeleteClick} />
+
+            {totalPages > 1 && (
+              <Pagination
+                totalPages={totalPages}
+                currentPage={currentPage}
+                setPage={setCurrentPage}
+              />
+            )}
+          </>
+        ) : null}
       </section>
 
       {isModalOpen && (
@@ -114,7 +151,6 @@ const NotesClient = ({ initialSearch, initialCategoryId, initialPage }: NotesCli
         </Modal>
       )}
     </>
-    // </Container>
   );
 };
 

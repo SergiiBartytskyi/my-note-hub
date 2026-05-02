@@ -1,10 +1,10 @@
 import { axiosAPI } from './axiosAPI';
-import type { NoteDto } from '../types/note';
+import type { NoteDto, NoteTag } from '../types/note';
 
 interface FetchNotesParams {
-  search: string;
-  tag?: string;
-  page: number;
+  search?: string;
+  tag?: NoteTag;
+  page?: number;
   perPage?: number;
   sortBy?: 'created' | 'updated';
 }
@@ -14,13 +14,13 @@ export interface FetchNotesResponse {
   totalPages: number;
 }
 
-export type Category = {
-  id: string;
-  name: string;
-  description: string;
-  createdAt: string;
-  updatedAt: string;
-};
+// export type Category = {
+//   id: string;
+//   name: string;
+//   description: string;
+//   createdAt: string;
+//   updatedAt: string;
+// };
 
 // export const getCategories = async () => {
 //   const response = await axiosAPI.get<Category[]>('/categories');
@@ -38,7 +38,7 @@ export type Category = {
 // };
 
 export const fetchNotes = async ({
-  search,
+  search = '',
   tag,
   page = 1,
   perPage = 12,
@@ -46,8 +46,8 @@ export const fetchNotes = async ({
 }: FetchNotesParams): Promise<FetchNotesResponse> => {
   const response = await axiosAPI.get<FetchNotesResponse>('/notes', {
     params: {
-      search,
-      tag,
+      search: search || undefined,
+      tag: tag || undefined,
       page,
       perPage,
       sortBy,

@@ -1,11 +1,10 @@
 'use client';
 
-type Props = {
-  error: Error & { digest?: string };
-  reset: () => void;
-};
+import {ErrorProps} from '@/types/commonTypes';
 
-const Error = ({ error, reset }: Props) => {
+
+
+const Error = ({ error, reset }: ErrorProps) => {
   return (
     <div>
       <p>Could not fetch note details. {error.message}</p>

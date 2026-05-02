@@ -9,5 +9,6 @@ export const useNote = (id: string, enabled = true) => {
     queryFn: () => fetchNoteById(id),
     enabled: Boolean(id) && enabled,
     retry: false,
+    refetchOnMount: false,
   });
 };

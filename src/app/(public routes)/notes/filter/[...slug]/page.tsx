@@ -1,8 +1,10 @@
 import type { Metadata } from 'next';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
+import { notFound } from 'next/navigation';
 import { fetchNotes } from '@/lib/noteService';
 import NotesClient from './Notes.client';
 import { getQueryClient } from '@/lib/queryClient';
+import { NoteTag } from '@/types/note';
 
 export const metadata: Metadata = {
   title: 'Notes page - NoteHub',
@@ -13,24 +15,41 @@ interface NotesPageProps {
   searchParams: Promise<{ search?: string; page?: string }>;
 }
 
+const validRouteTags = ['all', 'Todo', 'Work', 'Personal', 'Meeting', 'Shopping'] as const;
+
+type RouteTag = (typeof validRouteTags)[number];
+
 const NotesPage = async ({ params, searchParams }: NotesPageProps) => {
   const { slug } = await params;
   const resolvedSearchParams = await searchParams;
 
+  const routeTag = slug?.[0];
+
+  if (!routeTag || !validRouteTags.includes(routeTag as RouteTag)) {
+    notFound();
+  }
+
   const search = resolvedSearchParams.search ?? '';
   const page = Number(resolvedSearchParams.page ?? '1');
-  const categoryId = slug[0] === 'all' ? undefined : slug[0];
+
+  if (!Number.isInteger(page) || page < 1) {
+    notFound();
+  }
+
+  const tag: NoteTag | undefined = routeTag === 'all' ? undefined : (routeTag as NoteTag);
+
+  // const tag = slug[0] === 'all' ? undefined : (slug[0] as NoteTag);
 
   const queryClient = getQueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: ['notes', search, categoryId, page],
-    queryFn: () => fetchNotes({ search, categoryId, page }),
+    queryKey: ['notes', search, tag ?? 'all', page],
+    queryFn: () => fetchNotes({ search, tag, page }),
   });
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <NotesClient initialSearch={search} initialCategoryId={categoryId} initialPage={page} />
+      <NotesClient initialSearch={search} initialTag={routeTag as RouteTag} initialPage={page} />
     </HydrationBoundary>
   );
 };

@@ -31,12 +31,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} flex flex-col`}>
         <Providers>
           <TanStackProvider>
             <Header />
 
-            <main className="flex-1 pb-4 sm:pb-6 lg:pb-8">
+            <main className="flex flex-1 flex-col pb-4 items-center gap-4">
               {children}
               {modal}
             </main>

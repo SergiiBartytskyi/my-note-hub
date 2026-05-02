@@ -18,7 +18,7 @@ const NotFound = () => {
 
   return (
     <>
-      <Container>
+      <Container className="flex  items-center justify-center">
         <section className="rounded-2xl border border-border bg-surface p-4 shadow-sm flex flex-col items-center justify-between gap-3">
           <h1>404 - Page Not Found</h1>
           <p>Sorry, the page you&#39;re looking for doesn&#39;t exist.</p>
