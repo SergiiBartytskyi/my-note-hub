@@ -3,9 +3,10 @@ import { Formik, Form, Field, ErrorMessage, type FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 import Button from '../Button/Button';
 import type { NoteTag } from '../../types/note';
-import { Toaster } from 'react-hot-toast';
 
 interface NoteFormProps {
+  initialValues?: NoteFormValues;
+  submitLabel?: string;
   onSubmit: (values: NoteFormValues) => Promise<void>;
   onCancel: () => void;
 }
@@ -16,7 +17,7 @@ export interface NoteFormValues {
   tag: NoteTag;
 }
 
-const initialValues: NoteFormValues = {
+const defaultInitialValues: NoteFormValues = {
   title: '',
   content: '',
   tag: 'Todo',
@@ -30,12 +31,18 @@ const validationSchema = Yup.object({
     .required('Tag is required'),
 });
 
-const NoteForm = ({ onSubmit, onCancel }: NoteFormProps) => {
+const NoteForm = ({
+  initialValues = defaultInitialValues,
+  submitLabel = 'Create note',
+  onSubmit,
+  onCancel,
+}: NoteFormProps) => {
   const fieldId = useId();
 
   const handleSubmit = async (values: NoteFormValues, actions: FormikHelpers<NoteFormValues>) => {
     await onSubmit(values);
-    actions.resetForm();
+    // actions.resetForm();
+    actions.setSubmitting(false);
   };
   return (
     <Formik
@@ -43,6 +50,7 @@ const NoteForm = ({ onSubmit, onCancel }: NoteFormProps) => {
       onSubmit={handleSubmit}
       validationSchema={validationSchema}
       validateOnMount
+      enableReinitialize
     >
       {({ isValid, dirty, isSubmitting }) => (
         <Form className="flex flex-col gap-4">
@@ -72,6 +80,7 @@ const NoteForm = ({ onSubmit, onCancel }: NoteFormProps) => {
             />
             <ErrorMessage name="content" component="span" className="mt-1 text-xs text-red-500" />
           </div>
+
           <div className="flex flex-col text-base font-medium text-slate-700 dark:text-slate-300">
             <label htmlFor={`${fieldId}-tag`}>Tag</label>
             <Field
@@ -88,6 +97,7 @@ const NoteForm = ({ onSubmit, onCancel }: NoteFormProps) => {
             </Field>
             <ErrorMessage name="tag" component="span" className="mt-1 text-xs text-red-500" />
           </div>
+
           <div>
             <p className="text-xs text-slate-500 dark:text-slate-400">* must be filled in</p>
           </div>
@@ -97,7 +107,7 @@ const NoteForm = ({ onSubmit, onCancel }: NoteFormProps) => {
             </Button>
 
             <Button type="submit" variant="primary" disabled={!dirty || !isValid || isSubmitting}>
-              Create note
+              {submitLabel}
             </Button>
           </div>
         </Form>
