@@ -5,6 +5,7 @@ import Container from '@/components/Container/Container';
 import Button from '@/components/Button/Button';
 import NoteForm, { type NoteFormValues } from '@/components/NoteForm/NoteForm';
 import type { NoteDto } from '@/types/note';
+import { ArrowLeft } from 'lucide-react';
 
 interface EditNoteClientProps {
   note: NoteDto;
@@ -24,19 +25,21 @@ const EditNoteClient = ({ note }: EditNoteClientProps) => {
     // await updateNoteMutation.mutateAsync({ id: note.id, values });
 
     console.log(values);
-    router.replace(`/notes/${note.id}`);
+
+    router.replace(`/notes/filter/all`);
   };
 
   const handleCancel = () => {
-    router.replace(`/notes/${note.id}`);
+    router.replace(`/notes/filter/all`);
   };
 
   return (
     <Container>
       <section className="mx-auto max-w-3xl">
         <div className="mb-4">
-          <Button variant="ghost" type="button" onClick={handleCancel}>
-            Back to note
+          <Button variant="ghost" type="button" onClick={handleCancel} className="mb-4 gap-2">
+            <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+            Back to notes
           </Button>
         </div>
 
