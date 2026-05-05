@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Container from '@/components/Container/Container';
 import Button from '@/components/Button/Button';
 import NoteForm, { type NoteFormValues } from '@/components/NoteForm/NoteForm';
@@ -13,6 +13,10 @@ interface EditNoteClientProps {
 
 const EditNoteClient = ({ note }: EditNoteClientProps) => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const from = searchParams.get('from') || '/notes/filter/all';
+  const returnTo = from?.startsWith('/notes/filter/') ? from : '/notes/filter/all';
 
   const initialValues: NoteFormValues = {
     title: note.title,
@@ -26,11 +30,11 @@ const EditNoteClient = ({ note }: EditNoteClientProps) => {
 
     console.log(values);
 
-    router.replace(`/notes/filter/all`);
+    router.replace(returnTo);
   };
 
   const handleCancel = () => {
-    router.replace(`/notes/filter/all`);
+    router.replace(returnTo);
   };
 
   return (

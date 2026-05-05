@@ -64,7 +64,7 @@ const Modal = ({ onClose, children }: ModalProps) => {
       onClick={handleBackdropClick}
     >
       <div
-        className="relative max-h-[90dvh] w-full max-w-125 overflow-auto rounded-lg bg-white p-6 shadow-lg dark:bg-slate-900"
+        className="relative max-h-[90dvh] w-full max-w-125 overflow-auto rounded-2xl bg-white p-10 shadow-lg dark:bg-slate-900"
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-title"

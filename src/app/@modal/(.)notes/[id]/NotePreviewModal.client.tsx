@@ -1,14 +1,24 @@
-import Modal from '@/components/Modal/Modal';
+'use client';
 
+import Modal from '@/components/Modal/Modal';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { NoteDto } from '@/types/note';
 import { Pencil } from 'lucide-react';
-import Link from 'next/link';
+import Button from '@/components/Button/Button';
 
 interface NotePreviewModalProps {
   note: NoteDto;
 }
 
 const NotePreviewModal = ({ note }: NotePreviewModalProps) => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const from = searchParams.get('from') || '/notes/filter/all';
+
+  const handleEdit = () => {
+    router.replace(`/notes/${note.id}/edit?from=${encodeURIComponent(from)}`);
+  };
+
   return (
     <Modal>
       <div className="flex min-h-52 flex-col justify-between rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition-colors hover:border-slate-300 hover:shadow-md dark:border-slate-800 dark:bg-slate-900 dark:hover:border-slate-700">
@@ -29,13 +39,10 @@ const NotePreviewModal = ({ note }: NotePreviewModalProps) => {
           </span>
 
           <div className="flex items-center gap-2">
-            <Link
-              href={`/notes/${note.id}/edit`}
-              className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-sm text-blue-600 hover:bg-blue-50 hover:text-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 dark:hover:bg-slate-800 dark:text-blue-400"
-            >
+            <Button variant="secondary" onClick={handleEdit} className="flex items-center gap-2">
               <Pencil className="h-4 w-4" />
               Edit
-            </Link>
+            </Button>
           </div>
         </div>
       </div>
