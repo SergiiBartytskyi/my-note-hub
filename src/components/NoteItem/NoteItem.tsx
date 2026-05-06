@@ -5,6 +5,7 @@ import { usePathname, useSearchParams } from 'next/navigation';
 import type { NoteTag } from '../../types/note';
 import Button from '../Button/Button';
 import { Eye } from 'lucide-react';
+import { truncateText } from '@/utils/truncate';
 
 interface NoteItemProps {
   id: string;
@@ -25,10 +26,12 @@ const NoteItem = ({ id, title, content, tag, onDelete }: NoteItemProps) => {
       <div className="flex flex-col">
         <div className="flex items-center justify-between">
           <h2 className="mb-2 line-clamp-2 text-lg font-semibold text-slate-900 dark:text-slate-100">
-            {title}
+            {truncateText(title, 20)}
           </h2>
         </div>
-        <p className="mb-4 text-sm leading-6 text-slate-600 dark:text-slate-400">{content}</p>
+        <p className="mb-4 text-sm leading-6 text-slate-600 dark:text-slate-400">
+          {truncateText(content, 120)}
+        </p>
       </div>
 
       <div className="flex items-center justify-between gap-2">
