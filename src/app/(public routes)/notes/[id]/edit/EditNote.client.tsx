@@ -40,12 +40,10 @@ const EditNoteClient = ({ note }: EditNoteClientProps) => {
   return (
     <Container>
       <section className="mx-auto max-w-3xl">
-        <div className="mb-4">
-          <Button variant="ghost" type="button" onClick={handleCancel} className="mb-4 gap-2">
-            <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-            Back to notes
-          </Button>
-        </div>
+        <Button variant="ghost" type="button" onClick={handleCancel} className="mb-4 gap-2">
+          <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+          Back to notes
+        </Button>
 
         <article className="rounded-2xl border border-border bg-surface p-6 shadow-sm">
           <header className="mb-6 border-b border-border pb-4">
