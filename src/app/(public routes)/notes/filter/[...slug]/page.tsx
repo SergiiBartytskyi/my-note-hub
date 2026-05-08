@@ -7,7 +7,7 @@ import { getQueryClient } from '@/lib/queryClient';
 import { NoteTag } from '@/types/note';
 
 export const metadata: Metadata = {
-  title: 'Notes page - NoteHub',
+  title: 'Notes page - My Note Hub',
 };
 
 interface NotesPageProps {

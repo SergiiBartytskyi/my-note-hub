@@ -1,6 +1,20 @@
 import { notFound } from 'next/navigation';
+import { Metadata } from 'next';
 
-export default async function ProfilePage({ params }: { params: { id: string } }) {
+export const metadata: Metadata = {
+  title: 'Profile - My Note Hub',
+  description: 'View your profile information and settings.',
+};
+interface ProfileProps {
+  params: Promise<{
+    id: string;
+  }>;
+}
+
+export default async function ProfilePage({ params }: ProfileProps) {
+  const { id } = await params;
+  console.log('ProfilePage id:', id);
+
   const user = null; // Placeholder for actual user data
 
   if (!user) {

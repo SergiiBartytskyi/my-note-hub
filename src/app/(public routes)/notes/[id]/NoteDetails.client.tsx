@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { ArrowLeft, Pencil, Trash2 } from 'lucide-react';
 import Container from '@/components/Container/Container';
 import Button from '@/components/Button/Button';
@@ -15,7 +15,10 @@ interface NoteDetailsClientProps {
 
 const NoteDetailsClient = ({ id }: NoteDetailsClientProps) => {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [isDeleting, setIsDeleting] = useState(false);
+
+  const from = searchParams.get('from') || '/notes/filter/all';
 
   const { data: note, isLoading } = useNote(id, !isDeleting);
   const deleteNoteMutation = useDeleteNote();
@@ -29,7 +32,7 @@ const NoteDetailsClient = ({ id }: NoteDetailsClientProps) => {
     try {
       setIsDeleting(true);
       await deleteNoteMutation.mutateAsync(id);
-      router.replace('/notes/filter/all');
+      router.replace(`/notes/filter/all?from=${encodeURIComponent(from)}`);
     } catch {
       setIsDeleting(false);
     }
@@ -41,7 +44,11 @@ const NoteDetailsClient = ({ id }: NoteDetailsClientProps) => {
       return;
     }
 
-    router.replace('/notes/filter/all');
+    router.replace(`/notes/filter/all?from=${encodeURIComponent(from)}`);
+  };
+
+  const handleEdit = () => {
+    router.replace(`/notes/${id}/edit?from=${encodeURIComponent(from)}`);
   };
 
   if (isLoading) {
@@ -93,7 +100,7 @@ const NoteDetailsClient = ({ id }: NoteDetailsClientProps) => {
             </div>
 
             <div className="flex items-center gap-2">
-              <Button variant="secondary">
+              <Button variant="secondary" onClick={handleEdit}>
                 <Pencil className="h-4 w-4" aria-hidden="true" />
                 Edit
               </Button>

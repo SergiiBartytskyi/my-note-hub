@@ -17,9 +17,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'NoteHub',
+  title: 'My Note Hub',
   description:
-    'NoteHub is a modern Next.js app for creating, searching, and organizing notes in a clean, responsive interface.',
+    'My Note Hub is a modern Next.js app for creating, searching, and organizing notes in a clean, responsive interface.',
 };
 
 export default function RootLayout({
