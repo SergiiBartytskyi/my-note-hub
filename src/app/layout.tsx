@@ -30,6 +30,27 @@ export const metadata: Metadata = {
     apple: [{ url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
     shortcut: ['/favicon.ico'],
   },
+  openGraph: {
+    title: `Note Hub - Organize Your Notes with Ease`,
+    description: `Note Hub is a modern Next.js app for creating, searching, and organizing notes in a clean, responsive interface.`,
+    url: `https://my-note-hub.vercel.app`,
+    siteName: 'NoteHub',
+    images: [
+      {
+        url: 'https://drive.google.com/uc?export=view&id=195td0ub4MBQeHL21LvRfGO0cz9dQi18M',
+        width: 1200,
+        height: 630,
+        alt: 'Note Hub - Organize Your Notes with Ease',
+      },
+    ],
+    type: 'article',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: `Note Hub - Organize Your Notes with Ease`,
+    description: `Note Hub is a modern Next.js app for creating, searching, and organizing notes in a clean, responsive interface.`,
+    images: ['https://drive.google.com/uc?export=view&id=195td0ub4MBQeHL21LvRfGO0cz9dQi18M'],
+  },
 };
 
 export default function RootLayout({
