@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 // import { redirect } from 'next/navigation';
 
 export const metadata: Metadata = {
-  title: 'About page - My Note Hub',
+  title: 'About page - Note Hub',
 };
 
 const About = () => {

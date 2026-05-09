@@ -14,7 +14,7 @@ export const generateMetadata = async ({ params }: NoteDetailsPageProps): Promis
   const note = await fetchNoteById(id);
 
   return {
-    title: `Note: ${note?.title || 'Not Found'} - My Note Hub`,
+    title: `Note: ${note?.title || 'Not Found'} - Note Hub`,
     description: note?.content.slice(0, 160) || 'Note not found.',
   };
 };

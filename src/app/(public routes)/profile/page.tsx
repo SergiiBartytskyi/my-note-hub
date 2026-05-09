@@ -3,7 +3,7 @@ import { Link } from 'lucide-react';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Profile page - My Note Hub',
+  title: 'Profile page - Note Hub',
 };
 
 const Profile = () => {

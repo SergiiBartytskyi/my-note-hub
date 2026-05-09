@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
 import ThemeToggle from '@/components/ThemeToggle';
 import Container from '../Container/Container';
+import { Logo } from '../Logo/Logo';
 
 const links = [
   { href: '/', label: 'Home' },
@@ -34,14 +35,24 @@ export default function Header() {
             aria-label="Home"
             className="flex items-center justify-center transition-transform active:scale-[0.98]"
           >
-            <Image
-              src="/note-hub-logo.svg"
-              width={110}
-              height={40}
-              alt="NoteHub logo"
-              priority
-              className="h-auto w-27.5"
-            />
+            <>
+              <Image
+                src="/BlackLogo.png"
+                width={110}
+                height={40}
+                alt="NoteHub logo"
+                priority
+                className="h-auto w-27.5 dark:hidden"
+              />
+              <Image
+                src="/WhiteLogo.png"
+                width={110}
+                height={40}
+                alt="NoteHub logo"
+                priority
+                className="hidden h-auto w-27.5 dark:block"
+              />
+            </>
           </Link>
 
           <nav aria-label="Main navigation" className="hidden md:block">

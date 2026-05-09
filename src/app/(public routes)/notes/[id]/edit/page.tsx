@@ -8,7 +8,7 @@ interface EditNotePageProps {
 }
 
 export const metadata: Metadata = {
-  title: 'Edit Note - My Note Hub',
+  title: 'Edit Note - Note Hub',
   description: 'Edit your note information and settings.',
 };
 

@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Profile - My Note Hub',
+  title: 'Profile - Note Hub',
   description: 'View your profile information and settings.',
 };
 interface ProfileProps {

@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import Container from '@/components/Container/Container';
 
 export const metadata: Metadata = {
-  title: 'Edit Profile - My Note Hub',
+  title: 'Edit Profile - Note Hub',
   description: 'Edit your profile information and settings.',
 };
 
