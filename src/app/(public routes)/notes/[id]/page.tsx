@@ -15,7 +15,28 @@ export const generateMetadata = async ({ params }: NoteDetailsPageProps): Promis
 
   return {
     title: `Note: ${note?.title || 'Not Found'} - Note Hub`,
-    description: note?.content.slice(0, 160) || 'Note not found.',
+    description: `note?.content?.slice(0, 160) || 'View and organize your notes in NoteHub.';`,
+    openGraph: {
+      title: `Note: ${note?.title || 'Not Found'} - Note Hub`,
+      description: `Note: ${note?.title || 'Not Found'} - Note Hub`,
+      url: `https://my-note-hub.vercel.app/notes/${id}`,
+      siteName: 'NoteHub',
+      images: [
+        {
+          url: 'https://drive.google.com/uc?export=view&id=195td0ub4MBQeHL21LvRfGO0cz9dQi18M',
+          width: 1200,
+          height: 630,
+          alt: note?.title || 'Not Found',
+        },
+      ],
+      type: 'article',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${note?.title || 'Not Found'} - Note Hub`,
+      description: note?.content?.slice(0, 160) || 'Note not found.',
+      images: ['https://drive.google.com/uc?export=view&id=195td0ub4MBQeHL21LvRfGO0cz9dQi18M'],
+    },
   };
 };
 
