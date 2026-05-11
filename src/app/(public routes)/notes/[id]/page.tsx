@@ -13,12 +13,14 @@ export const generateMetadata = async ({ params }: NoteDetailsPageProps): Promis
   const { id } = await params;
   const note = await fetchNoteById(id);
 
+  const description = note?.content?.slice(0, 160) || 'View and organize your notes in NoteHub.';
+
   return {
     title: `Note: ${note?.title || 'Not Found'} - Note Hub`,
-    description: `note?.content?.slice(0, 160) || 'View and organize your notes in NoteHub.';`,
+    description,
     openGraph: {
       title: `Note: ${note?.title || 'Not Found'} - Note Hub`,
-      description: `Note: ${note?.title || 'Not Found'} - Note Hub`,
+      description,
       url: `https://my-note-hub.vercel.app/notes/${id}`,
       siteName: 'NoteHub',
       images: [
@@ -34,7 +36,7 @@ export const generateMetadata = async ({ params }: NoteDetailsPageProps): Promis
     twitter: {
       card: 'summary_large_image',
       title: `${note?.title || 'Not Found'} - Note Hub`,
-      description: note?.content?.slice(0, 160) || 'Note not found.',
+      description,
       images: ['https://drive.google.com/uc?export=view&id=195td0ub4MBQeHL21LvRfGO0cz9dQi18M'],
     },
   };

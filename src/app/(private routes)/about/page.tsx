@@ -4,6 +4,10 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'About page - Note Hub',
+  robots: {
+    index: false,
+    follow: true,
+  },
 };
 
 const About = () => {

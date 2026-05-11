@@ -1,9 +1,8 @@
 import axios from 'axios';
 
 export const axiosAPI = axios.create({
-  baseURL: 'https://notehub-public.goit.study/api',
+  baseURL: process.env.NEXT_PUBLIC_NOTEHUB_API_URL,
 });
-
 axiosAPI.interceptors.request.use(config => {
   const token = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
 
