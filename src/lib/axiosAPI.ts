@@ -11,6 +11,6 @@ axiosAPI.interceptors.request.use(config => {
   }
 
   config.headers.set('Accept', 'application/json');
-
+  console.log('API URL =', process.env.NEXT_PUBLIC_NOTEHUB_API_URL);
   return config;
 });
