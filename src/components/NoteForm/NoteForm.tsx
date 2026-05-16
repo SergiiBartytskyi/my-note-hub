@@ -39,7 +39,9 @@ const NoteForm = ({
   onCancel,
 }: NoteFormProps) => {
   const fieldId = useId();
-  const { draft, setDraft, clearDraft } = useNoteDraftStore();
+  const draft = useNoteDraftStore(state => state.draft);
+  const setDraft = useNoteDraftStore(state => state.setDraft);
+  const clearDraft = useNoteDraftStore(state => state.clearDraft);
 
   const formInitialValues = initialValues ?? {
     title: draft.title,
@@ -51,7 +53,6 @@ const NoteForm = ({
     await onSubmit(values);
     clearDraft();
     actions.resetForm();
-    actions.setSubmitting(false);
   };
 
   return (

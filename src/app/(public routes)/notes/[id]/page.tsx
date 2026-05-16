@@ -1,4 +1,4 @@
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import { notFound } from 'next/navigation';
 import NoteDetailsClient from './NoteDetails.client';
@@ -11,35 +11,49 @@ interface NoteDetailsPageProps {
 
 export const generateMetadata = async ({ params }: NoteDetailsPageProps): Promise<Metadata> => {
   const { id } = await params;
-  const note = await fetchNoteById(id);
 
-  const description = note?.content?.slice(0, 160) || 'View and organize your notes in NoteHub.';
-
-  return {
-    title: `Note: ${note?.title || 'Not Found'} - Note Hub`,
-    description,
-    openGraph: {
-      title: `Note: ${note?.title || 'Not Found'} - Note Hub`,
-      description,
-      url: `https://my-note-hub.vercel.app/notes/${id}`,
-      siteName: 'NoteHub',
-      images: [
-        {
-          url: 'https://drive.google.com/uc?export=view&id=195td0ub4MBQeHL21LvRfGO0cz9dQi18M',
-          width: 1200,
-          height: 630,
-          alt: note?.title || 'Not Found',
-        },
-      ],
-      type: 'article',
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: `${note?.title || 'Not Found'} - Note Hub`,
-      description,
-      images: ['https://drive.google.com/uc?export=view&id=195td0ub4MBQeHL21LvRfGO0cz9dQi18M'],
-    },
+  const fallbackMetadata: Metadata = {
+    title: 'Note Not Found',
+    description: 'The requested note could not be found in Note Hub.',
   };
+
+  try {
+    const note = await fetchNoteById(id);
+
+    if (!note) {
+      return fallbackMetadata;
+    }
+
+    const description = note?.content?.slice(0, 160) || 'View and organize your notes in Note Hub.';
+
+    return {
+      title: note?.title,
+      description,
+      openGraph: {
+        title: `${note.title} | Note Hub`,
+        description,
+        url: `/notes/${id}`,
+        siteName: 'Note Hub',
+        type: 'article',
+        images: [
+          {
+            url: '/og_image_notehub_v2.jpg',
+            width: 1200,
+            height: 630,
+            alt: 'Note Hub preview image',
+          },
+        ],
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: `${note?.title} | Note Hub`,
+        description,
+        images: ['/og_image_notehub_v2.jpg'],
+      },
+    };
+  } catch {
+    return fallbackMetadata;
+  }
 };
 
 const NoteDetails = async ({ params }: NoteDetailsPageProps) => {

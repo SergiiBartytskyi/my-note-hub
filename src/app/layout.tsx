@@ -1,23 +1,24 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Roboto } from 'next/font/google';
 import TanStackProvider from '@/components/TanStackProvider/TanStackProvider';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
 import './globals.css';
 import { Providers } from '@/components/Providers/Providers';
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
+const roboto = Roboto({
+  weight: ['400', '500', '700'],
   subsets: ['latin'],
-});
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
+  variable: '--font-roboto',
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
-  title: 'Note Hub',
+  metadataBase: new URL('https://my-note-hub.vercel.app'),
+  title: {
+    default: 'Note Hub',
+    template: '%s | Note Hub',
+  },
   description:
     'Note Hub is a modern Next.js app for creating, searching, and organizing notes in a clean, responsive interface.',
   manifest: '/site.webmanifest',
@@ -34,22 +35,22 @@ export const metadata: Metadata = {
     title: `Note Hub - Organize Your Notes with Ease`,
     description: `Note Hub is a modern Next.js app for creating, searching, and organizing notes in a clean, responsive interface.`,
     url: `https://my-note-hub.vercel.app`,
-    siteName: 'NoteHub',
+    siteName: 'Note Hub',
     images: [
       {
-        url: 'https://drive.google.com/uc?export=view&id=195td0ub4MBQeHL21LvRfGO0cz9dQi18M',
+        url: '/og_image_notehub_v2.jpg',
         width: 1200,
         height: 630,
-        alt: 'Note Hub - Organize Your Notes with Ease',
+        alt: 'Note Hub preview image',
       },
     ],
-    type: 'article',
+    type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
     title: `Note Hub - Organize Your Notes with Ease`,
     description: `Note Hub is a modern Next.js app for creating, searching, and organizing notes in a clean, responsive interface.`,
-    images: ['https://drive.google.com/uc?export=view&id=195td0ub4MBQeHL21LvRfGO0cz9dQi18M'],
+    images: ['/og_image_notehub_v2.jpg'],
   },
 };
 
@@ -61,8 +62,8 @@ export default function RootLayout({
   modal?: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} min-h-dvh flex flex-col`}>
+    <html lang="en" suppressHydrationWarning className={roboto.variable}>
+      <body className={`min-h-dvh flex flex-col`}>
         <Providers>
           <TanStackProvider>
             <Header />
