@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import { fetchNoteById } from '@/lib/noteService';
 import NotePreviewModal from './NotePreviewModal.client';
+import { NoteDto } from '@/types/note';
 
 interface NotePreviewProps {
   params: Promise<{ id: string }>;
@@ -9,7 +10,7 @@ interface NotePreviewProps {
 const Page = async ({ params }: NotePreviewProps) => {
   const { id } = await params;
 
-  let note;
+  let note: NoteDto | null = null;
 
   try {
     note = await fetchNoteById(id);

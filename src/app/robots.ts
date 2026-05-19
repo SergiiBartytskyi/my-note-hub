@@ -1,7 +1,7 @@
 import type { MetadataRoute } from 'next';
 
 export default function robots(): MetadataRoute.Robots {
-  const BASE_URL = process.env.NEXT_PUBLIC_NOTEHUB_APP_URL ?? 'https://my-note-hub.vercel.app';
+  const BASE_URL = process.env.NOTEHUB_APP_URL ?? 'http://localhost:3000';
 
   return {
     rules: {
