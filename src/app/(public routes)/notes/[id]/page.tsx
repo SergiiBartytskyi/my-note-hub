@@ -3,7 +3,7 @@ import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 import { notFound } from 'next/navigation';
 import NoteDetailsClient from './NoteDetails.client';
 import { getQueryClient } from '@/lib/queryClient';
-import { fetchNoteById } from '@/lib/noteService';
+import { fetchNoteByIdServer } from '@/lib/services/serverNoteService';
 
 interface NoteDetailsPageProps {
   params: Promise<{ id: string }>;
@@ -18,7 +18,7 @@ export const generateMetadata = async ({ params }: NoteDetailsPageProps): Promis
   };
 
   try {
-    const note = await fetchNoteById(id);
+    const note = await fetchNoteByIdServer(id);
 
     if (!note) {
       return fallbackMetadata;
@@ -63,7 +63,7 @@ const NoteDetails = async ({ params }: NoteDetailsPageProps) => {
   try {
     const note = await queryClient.fetchQuery({
       queryKey: ['note', id],
-      queryFn: () => fetchNoteById(id),
+      queryFn: () => fetchNoteByIdServer(id),
     });
 
     if (!note) {

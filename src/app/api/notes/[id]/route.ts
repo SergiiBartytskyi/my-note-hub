@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { serverAPI, ApiError } from '../../serverAPI';
+import { serverAPI, ApiError } from '../../../../lib/services/serverAPI';
+import { fetchNoteByIdServer } from '@/lib/services/serverNoteService';
 
 type Params = {
   params: Promise<{ id: string }>;
@@ -9,7 +10,7 @@ export async function GET(_request: NextRequest, { params }: Params) {
   const { id } = await params;
 
   try {
-    const { data } = await serverAPI.get(`/notes/${id}`);
+    const data = await fetchNoteByIdServer(id);
 
     return NextResponse.json(data);
   } catch (error) {

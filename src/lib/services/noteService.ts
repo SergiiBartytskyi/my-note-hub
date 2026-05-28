@@ -1,5 +1,5 @@
-import axios from 'axios';
-import type { NoteDto, NoteTag } from '../types/note';
+import type { NoteDto, NoteTag } from '../../types/note';
+import { clientAPI } from './clientAPI';
 
 interface FetchNotesParams {
   search?: string;
@@ -14,13 +14,6 @@ export interface FetchNotesResponse {
   totalPages: number;
 }
 
-const getBaseUrl = () => {
-  if (typeof window !== 'undefined') {
-    return '';
-  }
-  return process.env.NOTEHUB_APP_URL ?? 'http://localhost:3000';
-};
-
 export const fetchNotes = async ({
   search = '',
   tag,
@@ -28,9 +21,7 @@ export const fetchNotes = async ({
   perPage = 12,
   sortBy = 'created',
 }: FetchNotesParams): Promise<FetchNotesResponse> => {
-  const baseUrl = getBaseUrl();
-
-  const response = await axios.get<FetchNotesResponse>(`${baseUrl}/api/notes`, {
+  const response = await clientAPI.get<FetchNotesResponse>(`/api/notes`, {
     params: {
       search: search || undefined,
       tag: tag || undefined,
@@ -44,25 +35,19 @@ export const fetchNotes = async ({
 };
 
 export const fetchNoteById = async (id: string): Promise<NoteDto> => {
-  const baseUrl = getBaseUrl();
-
-  const response = await axios.get<NoteDto>(`${baseUrl}/api/notes/${id}`);
+  const response = await clientAPI.get<NoteDto>(`/api/notes/${id}`);
 
   return response.data;
 };
 
 export const createNote = async (noteData: Partial<NoteDto>): Promise<NoteDto> => {
-  const baseUrl = getBaseUrl();
-
-  const response = await axios.post<NoteDto>(`${baseUrl}/api/notes`, noteData);
+  const response = await clientAPI.post<NoteDto>(`/api/notes`, noteData);
 
   return response.data;
 };
 
 export const deleteNote = async (id: string): Promise<NoteDto> => {
-  const baseUrl = getBaseUrl();
-
-  const response = await axios.delete<NoteDto>(`${baseUrl}/api/notes/${id}`);
+  const response = await clientAPI.delete<NoteDto>(`/api/notes/${id}`);
 
   return response.data;
 };

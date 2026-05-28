@@ -1,10 +1,11 @@
 import type { Metadata } from 'next';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import { notFound } from 'next/navigation';
-import { fetchNotes } from '@/lib/noteService';
 import NotesClient from './Notes.client';
 import { getQueryClient } from '@/lib/queryClient';
 import { NoteTag } from '@/types/note';
+import { fetchNotesServer } from '@/lib/services/serverNoteService';
+import { isRouteTag } from '@/utils/typeGuards';
 
 interface NotesPageProps {
   params: Promise<{ slug: string[] }>;
@@ -13,10 +14,9 @@ interface NotesPageProps {
 
 export const generateMetadata = async ({ params }: NotesPageProps): Promise<Metadata> => {
   const { slug } = await params;
-
   const routeTag = slug?.[0];
 
-  if (!routeTag || !validRouteTags.includes(routeTag as RouteTag)) {
+  if (!routeTag || !isRouteTag(routeTag)) {
     return {
       title: 'Notes',
       description: 'Browse and manage your notes in Note Hub.',
@@ -51,17 +51,12 @@ export const generateMetadata = async ({ params }: NotesPageProps): Promise<Meta
   };
 };
 
-const validRouteTags = ['all', 'Todo', 'Work', 'Personal', 'Meeting', 'Shopping'] as const;
-
-type RouteTag = (typeof validRouteTags)[number];
-
 const NotesPage = async ({ params, searchParams }: NotesPageProps) => {
   const { slug } = await params;
   const resolvedSearchParams = await searchParams;
-
   const routeTag = slug?.[0];
 
-  if (!routeTag || !validRouteTags.includes(routeTag as RouteTag)) {
+  if (!routeTag || !isRouteTag(routeTag)) {
     notFound();
   }
 
@@ -72,19 +67,19 @@ const NotesPage = async ({ params, searchParams }: NotesPageProps) => {
     notFound();
   }
 
-  const tag: NoteTag | undefined = routeTag === 'all' ? undefined : (routeTag as NoteTag);
+  const tag: NoteTag | undefined = routeTag === 'all' ? undefined : routeTag;
 
   const queryClient = getQueryClient();
 
   await queryClient.prefetchQuery({
     queryKey: ['notes', search, tag ?? 'all', page],
-    queryFn: () => fetchNotes({ search, tag, page }),
+    queryFn: () => fetchNotesServer({ search, tag, page }),
   });
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <div className="flex flex-1 w-full">
-        <NotesClient initialSearch={search} initialTag={routeTag as RouteTag} initialPage={page} />
+        <NotesClient initialSearch={search} initialTag={routeTag} initialPage={page} />
       </div>
     </HydrationBoundary>
   );

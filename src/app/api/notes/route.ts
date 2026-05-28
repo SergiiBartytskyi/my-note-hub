@@ -1,16 +1,26 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { serverAPI, ApiError } from '../serverAPI';
+import { serverAPI, ApiError } from '../../../lib/services/serverAPI';
+import { fetchNotesServer } from '../../../lib/services/serverNoteService';
+import { isNoteTag, isSortBy } from '@/utils/typeGuards';
 
 export async function GET(request: NextRequest) {
   const search = request.nextUrl.searchParams.get('search') ?? '';
-  const tag = request.nextUrl.searchParams.get('tag') ?? undefined;
-  const page = request.nextUrl.searchParams.get('page') ?? '1';
-  const perPage = request.nextUrl.searchParams.get('perPage') ?? '12';
-  const sortBy = request.nextUrl.searchParams.get('sortBy') ?? 'created';
+  const page = parseInt(request.nextUrl.searchParams.get('page') ?? '1');
+  const perPage = parseInt(request.nextUrl.searchParams.get('perPage') ?? '12');
+
+  const tagParam = request.nextUrl.searchParams.get('tag');
+  const tag = isNoteTag(tagParam) ? tagParam : undefined;
+
+  const sortByParam = request.nextUrl.searchParams.get('sortBy');
+  const sortBy = isSortBy(sortByParam) ? sortByParam : 'created';
 
   try {
-    const { data } = await serverAPI.get('/notes', {
-      params: { search, tag, page, perPage, sortBy },
+    const data = await fetchNotesServer({
+      search,
+      tag,
+      page,
+      perPage,
+      sortBy,
     });
 
     return NextResponse.json(data);

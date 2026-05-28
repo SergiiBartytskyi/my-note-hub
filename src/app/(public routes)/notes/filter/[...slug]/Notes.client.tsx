@@ -13,8 +13,7 @@ import { useCreateNote } from '@/hooks/useCreateNote';
 import { useDeleteNote } from '@/hooks/useDeleteNote';
 import CategorySelect from '@/components/CategorySelect/CategorySelect';
 import Container from '@/components/Container/Container';
-
-type RouteTag = 'all' | 'Todo' | 'Work' | 'Personal' | 'Meeting' | 'Shopping';
+import { RouteTag } from '@/types/note';
 
 interface NotesClientProps {
   initialSearch: string;

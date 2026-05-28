@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import { fetchNoteById } from '@/lib/noteService';
+import { fetchNoteById } from '@/lib/services/noteService';
 import NotePreviewModal from './NotePreviewModal.client';
 import { NoteDto } from '@/types/note';
 

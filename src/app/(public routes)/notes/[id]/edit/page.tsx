@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { fetchNoteById } from '@/lib/noteService';
+import { fetchNoteById } from '@/lib/services/noteService';
 import EditNoteClient from './EditNote.client';
 
 interface EditNotePageProps {

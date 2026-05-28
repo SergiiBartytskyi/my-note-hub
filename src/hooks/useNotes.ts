@@ -1,7 +1,7 @@
 'use client';
 
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
-import { fetchNotes } from '@/lib/noteService';
+import { fetchNotes } from '@/lib/services/noteService';
 import { NoteTag } from '@/types/note';
 
 interface UseNotesParams {

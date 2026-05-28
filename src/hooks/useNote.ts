@@ -1,7 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { fetchNoteById } from '@/lib/noteService';
+import { fetchNoteById } from '@/lib/services/noteService';
 
 export const useNote = (id: string, enabled = true) => {
   return useQuery({
