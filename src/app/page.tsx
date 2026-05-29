@@ -4,7 +4,7 @@ export default function Home() {
   return (
     <Container>
       <section className="rounded-2xl border border-border bg-surface p-4 shadow-sm flex flex-col items-center justify-between gap-3">
-        <h1 className="text-4xl text-foreground dark:text-slate-200 font-bold text-center  mb-15">
+        <h1 className="text-4xl text-foreground dark:text-slate-200 font-bold text-center mb-15">
           Welcome to NoteHub
         </h1>
         <p className="text-[18px] text-foreground dark:text-slate-200 leading-7 mb-4">
