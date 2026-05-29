@@ -1,20 +1,17 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-
-const filterTags = ['all', 'Todo', 'Work', 'Personal', 'Meeting', 'Shopping'] as const;
-
-export type FilterTag = (typeof filterTags)[number];
+import { RouteTag, ROUTE_TAGS } from '@/types/note';
 
 interface CategorySelectProps {
-  value: FilterTag;
+  value: RouteTag;
 }
 
 const CategorySelect = ({ value }: CategorySelectProps) => {
   const router = useRouter();
 
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const nextCategory = event.target.value as FilterTag;
+    const nextCategory = event.target.value as RouteTag;
     router.push(`/notes/filter/${nextCategory}`);
   };
 
@@ -27,7 +24,7 @@ const CategorySelect = ({ value }: CategorySelectProps) => {
         onChange={handleChange}
         className="rounded-lg border border-border bg-surface-solid px-3 py-2 text-sm text-foreground outline-none transition focus:border-blue-500"
       >
-        {filterTags.map(tag => (
+        {ROUTE_TAGS.map(tag => (
           <option key={tag} value={tag}>
             {tag === 'all' ? 'All' : tag}
           </option>

@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { fetchNoteById } from '@/lib/services/noteService';
 import EditNoteClient from './EditNote.client';
+import { fetchNoteByIdServer } from '@/lib/services/serverNoteService';
 
 interface EditNotePageProps {
   params: Promise<{ id: string }>;
@@ -18,7 +18,7 @@ const EditNotePage = async ({ params }: EditNotePageProps) => {
   let note;
 
   try {
-    note = await fetchNoteById(id);
+    note = await fetchNoteByIdServer(id);
   } catch {
     notFound();
   }

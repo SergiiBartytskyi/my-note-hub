@@ -6,13 +6,14 @@ import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
 import ThemeToggle from '@/components/ThemeToggle';
 import Container from '../Container/Container';
-import { Logo } from '../Logo/Logo';
 
 const links = [
   { href: '/', label: 'Home' },
   { href: '/notes/filter/all', label: 'Notes' },
   { href: '/profile', label: 'Profile' },
   { href: '/about', label: 'About' },
+  { href: '/sign-in', label: 'Sign In' },
+  { href: '/sign-up', label: 'Sign Up' },
 ];
 
 const navLinkClass =

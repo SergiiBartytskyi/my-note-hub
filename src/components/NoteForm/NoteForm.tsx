@@ -28,7 +28,18 @@ const validationSchema = Yup.object({
     .max(500, 'Content must be at most 500 characters')
     .required('Content is required'),
   tag: Yup.string()
-    .oneOf(['Todo', 'Work', 'Personal', 'Meeting', 'Shopping'])
+    .oneOf([
+      'Todo',
+      'Work',
+      'Personal',
+      'Meeting',
+      'Shopping',
+      'Ideas',
+      'Travel',
+      'Finance',
+      'Health',
+      'Important',
+    ])
     .required('Tag is required'),
 });
 
@@ -120,6 +131,11 @@ const NoteForm = ({
                 <option value="Personal">Personal</option>
                 <option value="Meeting">Meeting</option>
                 <option value="Shopping">Shopping</option>
+                <option value="Ideas">Ideas</option>
+                <option value="Travel">Travel</option>
+                <option value="Finance">Finance</option>
+                <option value="Health">Health</option>
+                <option value="Important">Important</option>
               </Field>
               <ErrorMessage name="tag" component="span" className="mt-1 text-xs text-red-500" />
             </div>

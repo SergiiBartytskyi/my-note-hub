@@ -1,4 +1,16 @@
-export const NOTE_TAGS = ['Todo', 'Work', 'Personal', 'Meeting', 'Shopping'] as const;
+export const NOTE_TAGS = [
+  'Todo',
+  'Work',
+  'Personal',
+  'Meeting',
+  'Shopping',
+  'Ideas',
+  'Travel',
+  'Finance',
+  'Health',
+  'Important',
+] as const;
+
 export type NoteTag = (typeof NOTE_TAGS)[number];
 
 export const ROUTE_TAGS = ['all', ...NOTE_TAGS] as const;
