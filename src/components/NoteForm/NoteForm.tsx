@@ -3,7 +3,7 @@ import { Formik, Form, Field, ErrorMessage, type FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 import Button from '../Button/Button';
 import type { NoteTag } from '../../types/note';
-import { useNoteDraftStore } from '@/lib/stores/noteStore';
+import { useNoteDraftStore } from '@/lib/store/noteStore';
 
 interface NoteFormProps {
   initialValues?: NoteFormValues;

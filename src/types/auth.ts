@@ -8,3 +8,16 @@ export interface AuthResponse {
   email: string;
   avatar: string;
 }
+
+export type User = {
+  id: string;
+  email: string;
+  username: string;
+  avatar: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type CheckSessionRequest = {
+  success: boolean;
+};

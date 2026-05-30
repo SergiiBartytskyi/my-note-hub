@@ -3,8 +3,9 @@ import { Roboto } from 'next/font/google';
 import TanStackProvider from '@/components/TanStackProvider/TanStackProvider';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
-import './globals.css';
 import { Providers } from '@/components/Providers/Providers';
+import AuthProvider from '@/components/AuthProvider/AuthProvider';
+import './globals.css';
 
 const roboto = Roboto({
   weight: ['400', '500', '700'],
@@ -66,14 +67,16 @@ export default function RootLayout({
       <body className={`min-h-dvh flex flex-col`}>
         <Providers>
           <TanStackProvider>
-            <Header />
+            <AuthProvider>
+              <Header />
 
-            <main className="flex flex-1 flex-col pb-4 items-stretch gap-4">
-              {children}
-              {modal}
-            </main>
+              <main className="flex flex-1 flex-col pb-4 items-stretch gap-4">
+                {children}
+                {modal}
+              </main>
 
-            <Footer />
+              <Footer />
+            </AuthProvider>
           </TanStackProvider>
         </Providers>
       </body>

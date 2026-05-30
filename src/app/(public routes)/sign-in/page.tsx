@@ -2,26 +2,26 @@
 
 import { useId, useState } from 'react';
 import Link from 'next/link';
-import { AuthRequest } from '@/types/auth';
-import { useSignUp } from '@/hooks/useSignUp';
-import { ApiError } from '@/lib/services/serverAPI';
-import Container from '@/components/Container/Container';
-import { Eye, EyeOff } from 'lucide-react';
 import Button from '@/components/Button/Button';
+import Container from '@/components/Container/Container';
+import { AuthRequest } from '@/types/auth';
+import { Eye, EyeOff } from 'lucide-react';
+import { useSignIn } from '@/hooks/useSignIn';
+import { ApiError } from '@/lib/services/serverAPI';
 
-const SignUp = () => {
+const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const id = useId();
-  const signUpMutation = useSignUp();
+  const signInMutation = useSignIn();
 
   const isFormEmpty = !email || !password;
 
   const handleSubmit = async (formData: FormData) => {
     try {
       const formValues = Object.fromEntries(formData) as AuthRequest;
-      await signUpMutation.mutateAsync(formValues);
+      await signInMutation.mutateAsync(formValues);
     } catch {
       // handled in mutation onError
     }
@@ -31,7 +31,7 @@ const SignUp = () => {
     <Container className="flex flex-1 flex-col">
       <section className="rounded-2xl border border-border bg-surface p-4 shadow-sm flex flex-col items-center gap-3 flex-1 mx-auto w-full max-w-md">
         <h1 className="text-4xl text-foreground dark:text-slate-200 font-bold text-center  mb-15">
-          Sign up
+          Sign in
         </h1>
         <form
           action={handleSubmit}
@@ -82,25 +82,25 @@ const SignUp = () => {
           <Button
             type="submit"
             variant="primary"
-            disabled={isFormEmpty || signUpMutation.isPending}
+            disabled={isFormEmpty || signInMutation.isPending}
           >
-            {signUpMutation.isPending ? 'Registering...' : 'Register'}
+            {signInMutation.isPending ? 'Logging in...' : 'Log in'}
           </Button>
         </form>
         <p className="text-sm text-slate-500">
           Already have an account?{' '}
           <Link
-            href="/sign-in"
+            href="/sign-up"
             className="font-medium text-blue-600 hover:underline dark:text-blue-400"
           >
-            Sign in
+            Sign up
           </Link>
         </p>
 
-        {signUpMutation.isError && (
+        {signInMutation.isError && (
           <p className="text-red-500">
-            {(signUpMutation.error as ApiError).response?.data?.error ??
-              (signUpMutation.error as Error).message ??
+            {(signInMutation.error as ApiError).response?.data?.error ??
+              (signInMutation.error as Error).message ??
               'Oops... some error'}
           </p>
         )}
@@ -109,4 +109,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default SignIn;

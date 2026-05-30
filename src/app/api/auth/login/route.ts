@@ -1,19 +1,19 @@
-import { ApiError, serverAPI } from '@/lib/services/serverAPI';
 import { NextRequest, NextResponse } from 'next/server';
 import { parse } from 'cookie';
 import { cookies } from 'next/headers';
+import { ApiError, serverAPI } from '@/lib/services/serverAPI';
 import { getStatusMessage } from '@/utils/getStatusMessage';
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
 
   try {
-    const apiRes = await serverAPI.post('/auth/register', body);
+    const apiRes = await serverAPI.post('auth/login', body);
     const cookieStore = await cookies();
-    const setCookies = apiRes.headers['set-cookie'];
+    const setCookie = apiRes.headers['set-cookie'];
 
-    if (setCookies) {
-      const cookieArray = Array.isArray(setCookies) ? setCookies : [setCookies];
+    if (setCookie) {
+      const cookieArray = Array.isArray(setCookie) ? setCookie : [setCookie];
 
       for (const cookieString of cookieArray) {
         const parsed = parse(cookieString);

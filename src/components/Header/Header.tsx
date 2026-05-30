@@ -6,14 +6,13 @@ import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
 import ThemeToggle from '@/components/ThemeToggle';
 import Container from '../Container/Container';
+import AuthNavigation from '../AuthNavigation/AuthNavigation';
 
 const links = [
   { href: '/', label: 'Home' },
   { href: '/notes/filter/all', label: 'Notes' },
   { href: '/profile', label: 'Profile' },
   { href: '/about', label: 'About' },
-  { href: '/sign-in', label: 'Sign In' },
-  { href: '/sign-up', label: 'Sign Up' },
 ];
 
 const navLinkClass =
@@ -76,12 +75,26 @@ export default function Header() {
             </ul>
           </nav>
 
-          <div className="shrink-0">
-            <ThemeToggle />
+          <div className="flex items-center gap-4">
+            <nav aria-label="Authentication navigation" className="hidden md:block">
+              <ul className="m-0 flex list-none items-center gap-2 p-0">
+                <AuthNavigation />
+              </ul>
+            </nav>
+
+            <div className="shrink-0">
+              <ThemeToggle />
+            </div>
           </div>
         </div>
 
-        <nav aria-label="Mobile navigation" className="mt-3 md:hidden">
+        <nav aria-label="Authentication mobile navigation" className="mt-3 md:hidden">
+          <ul className="flex gap-2">
+            <AuthNavigation />
+          </ul>
+        </nav>
+
+        <nav aria-label="Notes mobile navigation" className="mt-5 md:hidden">
           <ul className="grid grid-cols-2 gap-2">
             {links.map(link => (
               <li key={link.href}>
