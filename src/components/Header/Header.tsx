@@ -4,7 +4,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
-import ThemeToggle from '@/components/ThemeToggle';
 import Container from '../Container/Container';
 import AuthNavigation from '../AuthNavigation/AuthNavigation';
 
@@ -29,30 +28,28 @@ export default function Header() {
   return (
     <header className="pt-1 pb-4">
       <Container>
-        <div className="flex items-center justify-between gap-4 rounded-2xl border border-border bg-surface p-4 shadow-sm backdrop-blur md:p-6">
+        <div className="flex items-center justify-center md:justify-between gap-4 rounded-2xl border border-border bg-surface p-4 shadow-sm backdrop-blur md:p-6">
           <Link
             href="/"
             aria-label="Home"
             className="flex items-center justify-center transition-transform active:scale-[0.98]"
           >
-            <>
-              <Image
-                src="/BlackLogo.png"
-                width={110}
-                height={40}
-                alt="NoteHub logo"
-                priority
-                className="h-auto w-27.5 dark:hidden"
-              />
-              <Image
-                src="/WhiteLogo.png"
-                width={110}
-                height={40}
-                alt="NoteHub logo"
-                priority
-                className="hidden h-auto w-27.5 dark:block"
-              />
-            </>
+            <Image
+              src="/BlackLogo.png"
+              width={110}
+              height={40}
+              alt="NoteHub logo"
+              priority
+              className="h-auto w-27.5 dark:hidden"
+            />
+            <Image
+              src="/WhiteLogo.png"
+              width={110}
+              height={40}
+              alt="NoteHub logo"
+              priority
+              className="hidden h-auto w-27.5 dark:block"
+            />
           </Link>
 
           <nav aria-label="Main navigation" className="hidden md:block">
@@ -81,10 +78,6 @@ export default function Header() {
                 <AuthNavigation />
               </ul>
             </nav>
-
-            <div className="shrink-0">
-              <ThemeToggle />
-            </div>
           </div>
         </div>
 
