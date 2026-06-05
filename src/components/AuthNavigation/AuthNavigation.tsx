@@ -1,10 +1,11 @@
 'use client';
 
 import Link from 'next/link';
-import { useAuthStore } from '@/lib/store/authStore';
 import clsx from 'clsx';
 import { usePathname } from 'next/navigation';
 import Button from '../Button/Button';
+import { useLogout } from '@/hooks/useLogout';
+import { useMe } from '@/hooks/useMe';
 
 const links = [
   { href: '/sign-in', label: 'Sign In' },
@@ -13,20 +14,25 @@ const links = [
 
 const AuthNavigation = () => {
   const pathname = usePathname();
-  const { isAuthenticated, user } = useAuthStore();
+  const { data: user, isPending } = useMe();
+  const isAuthenticated = !!user;
+  const { mutate: handleLogout, isPending: isLogoutPending } = useLogout();
+
+  if (isPending) return null;
 
   const isActive = (href: string) => {
-    if (href === '/') return pathname === '/';
+    if (href === '/') {
+      return pathname === '/';
+    }
     return pathname.startsWith(href);
   };
 
-  const handleLogout = () => {};
-
   return isAuthenticated ? (
     <li className="w-full flex items-center justify-between gap-4">
-      <p>{user?.email}</p>
-      <Button variant="danger" onClick={handleLogout}>
-        Logout
+      <p>{user.email}</p>
+
+      <Button variant="danger" onClick={() => handleLogout()} disabled={isLogoutPending}>
+        {isLogoutPending ? 'Logging out...' : 'Logout'}
       </Button>
     </li>
   ) : (

@@ -4,20 +4,25 @@ import { useRouter } from 'next/navigation';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { signIn } from '@/lib/services/authService';
 import toast from 'react-hot-toast';
+import { ApiError } from '@/lib/services/serverAPI';
 
 export const useSignIn = () => {
-  const router = useRouter();
   const queryClient = useQueryClient();
+  const router = useRouter();
 
   return useMutation({
     mutationFn: signIn,
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ['user'] });
+    onSuccess: data => {
+      queryClient.setQueryData(['me'], data);
       toast.success('User signed in successfully!', { icon: '✅' });
-      router.push('/profile');
+      router.push('/');
     },
     onError: error => {
-      console.error('Failed to sign in:', error);
+      toast.error(
+        (error as ApiError).response?.data?.error ??
+          (error as Error).message ??
+          'Oops... some error'
+      );
     },
   });
 };

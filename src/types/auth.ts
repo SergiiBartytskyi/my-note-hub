@@ -10,12 +10,9 @@ export interface AuthResponse {
 }
 
 export type User = {
-  id: string;
   email: string;
   username: string;
   avatar: string;
-  createdAt: string;
-  updatedAt: string;
 };
 
 export type CheckSessionRequest = {

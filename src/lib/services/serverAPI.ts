@@ -5,6 +5,7 @@ export type ApiError = AxiosError<{ error: string }>;
 
 export const serverAPI = axios.create({
   baseURL: process.env.NOTEHUB_API_URL,
+  withCredentials: true,
 });
 
 serverAPI.interceptors.request.use(async config => {
@@ -22,6 +23,5 @@ serverAPI.interceptors.request.use(async config => {
   }
 
   config.headers.set('Accept', 'application/json');
-
   return config;
 });

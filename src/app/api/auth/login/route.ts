@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
         }
       }
 
-      return NextResponse.json(apiRes.data);
+      return NextResponse.json(apiRes.data, { status: apiRes.status });
     }
 
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

@@ -8,7 +8,7 @@ export async function POST(req: NextRequest) {
   const body = await req.json();
 
   try {
-    const apiRes = await serverAPI.post('/auth/register', body);
+    const apiRes = await serverAPI.post('auth/register', body);
     const cookieStore = await cookies();
     const setCookies = apiRes.headers['set-cookie'];
 
@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
         }
       }
 
-      return NextResponse.json(apiRes.data);
+      return NextResponse.json(apiRes.data, { status: apiRes.status });
     }
 
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

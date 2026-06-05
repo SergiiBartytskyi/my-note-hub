@@ -14,6 +14,7 @@ import { useDeleteNote } from '@/hooks/useDeleteNote';
 import CategorySelect from '@/components/CategorySelect/CategorySelect';
 import Container from '@/components/Container/Container';
 import { RouteTag } from '@/types/note';
+import { useMe } from '@/hooks/useMe';
 
 interface NotesClientProps {
   initialSearch: string;
@@ -25,6 +26,8 @@ const NotesClient = ({ initialSearch, initialTag, initialPage }: NotesClientProp
   const [query, setQuery] = useState<string>(initialSearch);
   const [currentPage, setCurrentPage] = useState<number>(initialPage);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const { data: user } = useMe();
+  const isAuthenticated = !!user;
 
   const backendTag = initialTag === 'all' ? undefined : initialTag;
 
@@ -69,6 +72,19 @@ const NotesClient = ({ initialSearch, initialTag, initialPage }: NotesClientProp
   const showError = isError && !data;
   const showEmpty = isSuccess && notes.length === 0;
   const showList = notes.length > 0;
+  const showNotAuthenticated = !isAuthenticated;
+
+  if (showNotAuthenticated) {
+    return (
+      <div className="flex flex-1 w-full items-center justify-center">
+        <Container className="flex flex-col items-center justify-center gap-3 rounded-2xl border border-border bg-surface p-4 shadow-sm">
+          <p className="text-sm text-slate-600 dark:text-slate-300">
+            Please sign in to view your notes.
+          </p>
+        </Container>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-1 w-full flex-col gap-4">

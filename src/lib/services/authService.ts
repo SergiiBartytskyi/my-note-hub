@@ -2,21 +2,24 @@ import { AuthRequest, AuthResponse, CheckSessionRequest, User } from '@/types/au
 import { clientAPI } from './clientAPI';
 
 export const signUp = async (userData: AuthRequest): Promise<AuthResponse> => {
-  const response = await clientAPI.post<AuthResponse>(`/api/auth/register`, userData);
-  return response.data;
+  const { data } = await clientAPI.post<AuthResponse>(`/api/auth/register`, userData);
+  return data;
 };
 export const signIn = async (userData: AuthRequest): Promise<AuthResponse> => {
-  const response = await clientAPI.post<AuthResponse>(`/api/auth/login`, userData);
-  return response.data;
+  const { data } = await clientAPI.post<AuthResponse>(`/api/auth/login`, userData);
+  return data;
 };
 
 export const checkSession = async () => {
-  const res = await clientAPI.get<CheckSessionRequest>('/api/auth/session');
-  console.log('Session check response:', res.data);
-  return res.data.success;
+  const { data } = await clientAPI.get<CheckSessionRequest>('/api/auth/session');
+  return data.success;
 };
 
 export const getMe = async () => {
-  const { data } = await clientAPI.get<User>('/api/auth/refreshSession');
+  const { data } = await clientAPI.get<User>('/api/users/me');
   return data;
+};
+
+export const logout = async (): Promise<void> => {
+  await clientAPI.post('/api/auth/logout');
 };

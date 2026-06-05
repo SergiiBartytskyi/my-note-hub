@@ -18,13 +18,9 @@ const SignIn = () => {
 
   const isFormEmpty = !email || !password;
 
-  const handleSubmit = async (formData: FormData) => {
-    try {
-      const formValues = Object.fromEntries(formData) as AuthRequest;
-      await signInMutation.mutateAsync(formValues);
-    } catch {
-      // handled in mutation onError
-    }
+  const handleSubmit = (formData: FormData) => {
+    const formValues = Object.fromEntries(formData) as AuthRequest;
+    signInMutation.mutate(formValues);
   };
 
   return (
@@ -64,7 +60,7 @@ const SignIn = () => {
                 id={`password-${id}`}
                 required
                 placeholder="••••••••"
-                autoComplete="new-password"
+                autoComplete="current-password"
                 className="h-10 w-full rounded-lg border border-slate-300 bg-surface-solid pl-2 pr-10 py-2 text-base text-foreground placeholder:text-slate-400 shadow-sm outline-none transition-colors hover:border-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-500 dark:hover:border-slate-600 dark:focus:ring-blue-500 dark:hover:focus:ring-blue-500 dark:focus:ring-offset-slate-950"
                 aria-label="Password"
               />
@@ -88,7 +84,7 @@ const SignIn = () => {
           </Button>
         </form>
         <p className="text-sm text-slate-500">
-          Already have an account?{' '}
+          Don&apos;t have an account?{' '}
           <Link
             href="/sign-up"
             className="font-medium text-blue-600 hover:underline dark:text-blue-400"

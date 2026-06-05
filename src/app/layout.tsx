@@ -4,7 +4,6 @@ import TanStackProvider from '@/components/TanStackProvider/TanStackProvider';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
 import { Providers } from '@/components/Providers/Providers';
-import AuthProvider from '@/components/AuthProvider/AuthProvider';
 import './globals.css';
 
 const roboto = Roboto({
@@ -67,16 +66,14 @@ export default function RootLayout({
       <body className={`min-h-dvh flex flex-col`}>
         <Providers>
           <TanStackProvider>
-            <AuthProvider>
-              <Header />
+            <Header />
 
-              <main className="flex flex-1 flex-col pb-4 items-stretch gap-4">
-                {children}
-                {modal}
-              </main>
+            <main className="flex flex-1 flex-col pb-4 items-stretch gap-4">
+              {children}
+              {modal}
+            </main>
 
-              <Footer />
-            </AuthProvider>
+            <Footer />
           </TanStackProvider>
         </Providers>
       </body>

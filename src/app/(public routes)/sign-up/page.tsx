@@ -18,13 +18,9 @@ const SignUp = () => {
 
   const isFormEmpty = !email || !password;
 
-  const handleSubmit = async (formData: FormData) => {
-    try {
-      const formValues = Object.fromEntries(formData) as AuthRequest;
-      await signUpMutation.mutateAsync(formValues);
-    } catch {
-      // handled in mutation onError
-    }
+  const handleSubmit = (formData: FormData) => {
+    const formValues = Object.fromEntries(formData) as AuthRequest;
+    signUpMutation.mutate(formValues);
   };
 
   return (

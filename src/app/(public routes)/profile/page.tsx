@@ -1,6 +1,8 @@
-import Container from '@/components/Container/Container';
-import { Link } from 'lucide-react';
 import type { Metadata } from 'next';
+import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
+import { getQueryClient } from '@/lib/queryClient';
+import { serverGetMe } from '@/lib/services/serverAuthService';
+import ProfileClient from './Profile.client';
 
 export const metadata: Metadata = {
   title: 'Profile page',
@@ -10,23 +12,17 @@ export const metadata: Metadata = {
   },
 };
 
-const Profile = () => {
-  return (
-    <>
-      <Container className="flex flex-col gap-4">
-        <section className="rounded-2xl border border-border bg-surface p-4 shadow-sm flex flex-col items-start justify-between gap-3">
-          <h1>My Profile</h1>
-          <h2>Name: User name</h2>
-          <p>
-            Some description: Lorem, ipsum dolor sit amet consectetur adipisicing elit. Cumque non
-            quis, vero consectetur eum at commodi facere error, laborum, rerum labore corrupti neque
-            veritatis sed minima et nam. Autem, cumque.
-          </p>
+const Profile = async () => {
+  const queryClient = getQueryClient();
 
-          <Link href="/profile/edit">Edit profile</Link>
-        </section>
-      </Container>
-    </>
+  await queryClient.prefetchQuery({
+    queryKey: ['me'],
+    queryFn: serverGetMe,
+  });
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <ProfileClient />
+    </HydrationBoundary>
   );
 };
 
