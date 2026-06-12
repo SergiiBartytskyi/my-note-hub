@@ -42,6 +42,7 @@ const NoteItem = ({ id, title, content, tag, onDelete }: NoteItemProps) => {
         <div className="flex items-center gap-2">
           <Link
             href={`/notes/${id}?from=${encodeURIComponent(from)}`}
+            prefetch={false}
             className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-sm text-blue-600 hover:bg-blue-50 hover:text-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 dark:hover:bg-slate-800 dark:text-blue-400"
           >
             <Eye className="h-4 w-4" />
