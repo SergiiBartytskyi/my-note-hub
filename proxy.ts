@@ -21,18 +21,14 @@ export async function proxy(request: NextRequest) {
 
   const accessToken = request.cookies.get('accessToken')?.value;
   const refreshToken = request.cookies.get('refreshToken')?.value;
-  console.log('proxy hit:', pathname);
-  console.log('accessToken exists:', !!accessToken);
-  console.log('refreshToken exists:', !!refreshToken);
+
   const isPublicRoute = publicRoutes.some(route => pathname.startsWith(route));
   const isPrivateRoute = privateRoutes.some(route => pathname.startsWith(route));
 
   if (!accessToken && refreshToken) {
     try {
       const apiRes = await refreshSession(request.headers.get('cookie') ?? '');
-      console.log('status:', apiRes.status);
-      console.log('set-cookie:', apiRes.headers['set-cookie']);
-      console.log('response data:', apiRes.data);
+
       const setCookie = apiRes.headers['set-cookie'];
 
       if (setCookie) {

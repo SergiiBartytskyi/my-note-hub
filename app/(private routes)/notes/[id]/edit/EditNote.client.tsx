@@ -28,8 +28,6 @@ const EditNoteClient = ({ note }: EditNoteClientProps) => {
     // тут буде update mutation
     // await updateNoteMutation.mutateAsync({ id: note.id, values });
 
-    console.log(values);
-
     router.replace(returnTo);
   };
 

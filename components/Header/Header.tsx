@@ -9,8 +9,8 @@ import AuthNavigation from '../AuthNavigation/AuthNavigation';
 
 const links = [
   { href: '/', label: 'Home' },
-  { href: '/notes/filter/all', label: 'Notes' },
-  { href: '/profile', label: 'Profile' },
+  { href: '/notes/filter/all', label: 'Notes', prefetch: false },
+  { href: '/profile', label: 'Profile', prefetch: false },
   { href: '/about', label: 'About' },
 ];
 
@@ -58,6 +58,7 @@ export default function Header() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
+                    prefetch={link.prefetch}
                     className={clsx(
                       navLinkClass,
                       isActive(link.href)
@@ -91,6 +92,7 @@ export default function Header() {
               <li key={link.href}>
                 <Link
                   href={link.href}
+                  prefetch={link.prefetch}
                   className={clsx(
                     'flex items-center justify-center rounded-xl border px-3 py-2 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 dark:focus-visible:ring-blue-500',
                     isActive(link.href)
