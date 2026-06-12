@@ -28,7 +28,7 @@ export default function Header() {
   return (
     <header className="pt-1 pb-4">
       <Container>
-        <div className="flex items-center justify-center md:justify-between gap-4 rounded-2xl border border-border bg-surface p-4 shadow-sm backdrop-blur md:p-6">
+        <div className="flex items-center justify-center md:justify-between  rounded-2xl border border-border bg-surface p-4 shadow-sm backdrop-blur md:p-6">
           <Link
             href="/"
             aria-label="Home"
@@ -72,13 +72,11 @@ export default function Header() {
             </ul>
           </nav>
 
-          <div className="flex items-center gap-4">
-            <nav aria-label="Authentication navigation" className="hidden md:block">
-              <ul className="m-0 flex list-none items-center gap-2 p-0">
-                <AuthNavigation />
-              </ul>
-            </nav>
-          </div>
+          <nav aria-label="Authentication navigation" className="hidden md:flex shrink-0">
+            <ul className="m-0 flex list-none items-center gap-2 p-0">
+              <AuthNavigation />
+            </ul>
+          </nav>
         </div>
 
         <nav aria-label="Authentication mobile navigation" className="mt-3 md:hidden">

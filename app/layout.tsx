@@ -1,9 +1,12 @@
 import type { Metadata } from 'next';
 import { Roboto } from 'next/font/google';
+import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import TanStackProvider from '@/components/TanStackProvider/TanStackProvider';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
 import { Providers } from '@/components/Providers/Providers';
+import { getQueryClient } from '@/lib/queryClient';
+import { serverGetMe } from '@/lib/services/serverAuthService';
 import './globals.css';
 
 const roboto = Roboto({
@@ -54,19 +57,30 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+const RootLayout = async ({
   children,
   modal,
 }: Readonly<{
   children: React.ReactNode;
   modal?: React.ReactNode;
-}>) {
+}>) => {
+  const queryClient = getQueryClient();
+
+  try {
+    await queryClient.prefetchQuery({
+      queryKey: ['me'],
+      queryFn: serverGetMe,
+    });
+  } catch {}
+
   return (
     <html lang="en" suppressHydrationWarning className={roboto.variable}>
       <body className={`min-h-dvh flex flex-col`}>
         <Providers>
           <TanStackProvider>
-            <Header />
+            <HydrationBoundary state={dehydrate(queryClient)}>
+              <Header />
+            </HydrationBoundary>
 
             <main className="flex flex-1 flex-col pb-4 items-stretch gap-4">
               {children}
@@ -79,4 +93,6 @@ export default function RootLayout({
       </body>
     </html>
   );
-}
+};
+
+export default RootLayout;
