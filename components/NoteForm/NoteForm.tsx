@@ -2,7 +2,7 @@ import { useId } from 'react';
 import { Formik, Form, Field, ErrorMessage, type FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 import Button from '../Button/Button';
-import type { NoteTag } from '../../types/note';
+import type { NoteFormValues } from '../../types/note';
 import { useNoteDraftStore } from '../../lib/store/noteStore';
 
 interface NoteFormProps {
@@ -10,12 +10,7 @@ interface NoteFormProps {
   submitLabel?: string;
   onSubmit: (values: NoteFormValues) => Promise<void>;
   onCancel: () => void;
-}
-
-export interface NoteFormValues {
-  title: string;
-  content: string;
-  tag: NoteTag;
+  resetOnSubmit?: boolean;
 }
 
 const validationSchema = Yup.object({
@@ -48,6 +43,7 @@ const NoteForm = ({
   submitLabel = 'Create note',
   onSubmit,
   onCancel,
+  resetOnSubmit = true,
 }: NoteFormProps) => {
   const fieldId = useId();
   const draft = useNoteDraftStore(state => state.draft);
@@ -63,7 +59,10 @@ const NoteForm = ({
   const handleSubmit = async (values: NoteFormValues, actions: FormikHelpers<NoteFormValues>) => {
     await onSubmit(values);
     clearDraft();
-    actions.resetForm();
+
+    if (resetOnSubmit) {
+      actions.resetForm();
+    }
   };
 
   return (

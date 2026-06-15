@@ -1,4 +1,4 @@
-import type { NoteDto, NoteTag } from '../../types/note';
+import type { NoteDto, NoteTag, NoteFormValues } from '../../types/note';
 import { clientAPI } from './clientAPI';
 
 interface FetchNotesParams {
@@ -21,7 +21,7 @@ export const fetchNotes = async ({
   perPage = 12,
   sortBy = 'created',
 }: FetchNotesParams): Promise<FetchNotesResponse> => {
-  const response = await clientAPI.get<FetchNotesResponse>(`/api/notes`, {
+  const { data } = await clientAPI.get<FetchNotesResponse>(`/api/notes`, {
     params: {
       search: search || undefined,
       tag: tag || undefined,
@@ -31,23 +31,34 @@ export const fetchNotes = async ({
     },
   });
 
-  return response.data;
+  return data;
 };
 
 export const fetchNoteById = async (id: string): Promise<NoteDto> => {
-  const response = await clientAPI.get<NoteDto>(`/api/notes/${id}`);
+  const { data } = await clientAPI.get<NoteDto>(`/api/notes/${id}`);
 
-  return response.data;
+  return data;
 };
 
 export const createNote = async (noteData: Partial<NoteDto>): Promise<NoteDto> => {
-  const response = await clientAPI.post<NoteDto>(`/api/notes`, noteData);
+  const { data } = await clientAPI.post<NoteDto>(`/api/notes`, noteData);
 
-  return response.data;
+  return data;
 };
 
 export const deleteNote = async (id: string): Promise<NoteDto> => {
-  const response = await clientAPI.delete<NoteDto>(`/api/notes/${id}`);
+  const { data } = await clientAPI.delete<NoteDto>(`/api/notes/${id}`);
 
-  return response.data;
+  return data;
+};
+
+export const updateNote = async ({
+  id,
+  values,
+}: {
+  id: string;
+  values: NoteFormValues;
+}): Promise<NoteDto> => {
+  const { data } = await clientAPI.patch(`/api/notes/${id}`, values);
+  return data;
 };

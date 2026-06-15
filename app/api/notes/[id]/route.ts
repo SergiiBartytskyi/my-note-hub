@@ -40,3 +40,21 @@ export async function DELETE(_request: NextRequest, { params }: Params) {
     );
   }
 }
+
+export async function PATCH(request: NextRequest, { params }: Params) {
+  const { id } = await params;
+  const noteData = await request.json();
+
+  try {
+    const { data } = await serverAPI.patch(`/notes/${id}`, noteData);
+
+    return NextResponse.json(data);
+  } catch (error) {
+    return NextResponse.json(
+      {
+        error: (error as ApiError).response?.data.error ?? (error as ApiError).message,
+      },
+      { status: (error as ApiError).response?.status ?? 500 }
+    );
+  }
+}

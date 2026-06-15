@@ -1,11 +1,12 @@
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
+import { ArrowLeft } from 'lucide-react';
+import type { NoteDto, NoteFormValues } from '../../../../../types/note';
 import Container from '@/components/Container/Container';
 import Button from '@/components/Button/Button';
-import NoteForm, { type NoteFormValues } from '@/components/NoteForm/NoteForm';
-import type { NoteDto } from '../../../../../types/note';
-import { ArrowLeft } from 'lucide-react';
+import NoteForm from '@/components/NoteForm/NoteForm';
+import { useUpdateNote } from '@/hooks/useUpdateNote';
 
 interface EditNoteClientProps {
   note: NoteDto;
@@ -14,6 +15,7 @@ interface EditNoteClientProps {
 const EditNoteClient = ({ note }: EditNoteClientProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const updateNoteMutation = useUpdateNote();
 
   const from = searchParams.get('from') || '/notes/filter/all';
   const returnTo = from?.startsWith('/notes/filter/') ? from : '/notes/filter/all';
@@ -25,8 +27,7 @@ const EditNoteClient = ({ note }: EditNoteClientProps) => {
   };
 
   const handleSubmit = async (values: NoteFormValues) => {
-    // тут буде update mutation
-    // await updateNoteMutation.mutateAsync({ id: note.id, values });
+    await updateNoteMutation.mutateAsync({ id: note.id, values });
 
     router.replace(returnTo);
   };
@@ -56,6 +57,7 @@ const EditNoteClient = ({ note }: EditNoteClientProps) => {
             submitLabel="Save changes"
             onSubmit={handleSubmit}
             onCancel={handleCancel}
+            resetOnSubmit={false}
           />
         </article>
       </section>

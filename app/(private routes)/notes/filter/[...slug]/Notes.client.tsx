@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useDebouncedCallback } from 'use-debounce';
 import Button from '@/components/Button/Button';
 import Modal from '@/components/Modal/Modal';
-import NoteForm, { type NoteFormValues } from '@/components/NoteForm/NoteForm';
+import NoteForm from '@/components/NoteForm/NoteForm';
 import NoteList from '@/components/NoteList/NoteList';
 import Pagination from '@/components/Pagination/Pagination';
 import SearchBox from '@/components/SearchBox/SearchBox';
@@ -13,7 +13,7 @@ import { useCreateNote } from '../../../../../hooks/useCreateNote';
 import { useDeleteNote } from '../../../../../hooks/useDeleteNote';
 import CategorySelect from '@/components/CategorySelect/CategorySelect';
 import Container from '@/components/Container/Container';
-import { RouteTag } from '../../../../../types/note';
+import { RouteTag, NoteFormValues } from '../../../../../types/note';
 import { useMe } from '../../../../../hooks/useMe';
 
 interface NotesClientProps {
