@@ -15,7 +15,7 @@ const links = [
 ];
 
 const navLinkClass =
-  'inline-flex items-center rounded-lg px-3 py-2 text-sm font-medium no-underline transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 dark:focus-visible:ring-blue-500';
+  'inline-flex items-center rounded-lg px-3 py-2 text-sm font-medium no-underline transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 dark:focus-visible:ring-blue-500 cursor-pointer';
 
 export default function Header() {
   const pathname = usePathname();
@@ -32,7 +32,7 @@ export default function Header() {
           <Link
             href="/"
             aria-label="Home"
-            className="flex items-center justify-center transition-transform active:scale-[0.98]"
+            className="flex items-center justify-center transition-transform active:scale-[0.98] cursor-pointer"
           >
             <Image
               src="/BlackLogo.png"
@@ -94,7 +94,7 @@ export default function Header() {
                   href={link.href}
                   prefetch={link.prefetch}
                   className={clsx(
-                    'flex items-center justify-center rounded-xl border px-3 py-2 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 dark:focus-visible:ring-blue-500',
+                    'flex items-center justify-center rounded-xl border px-3 py-2 text-sm font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-600 dark:focus-visible:ring-blue-500 cursor-pointer',
                     isActive(link.href)
                       ? 'border-border bg-slate-100 text-blue-600 dark:bg-slate-800 dark:text-blue-400'
                       : 'border-border bg-surface-solid text-foreground hover:bg-slate-100 hover:text-blue-600 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-blue-400'
